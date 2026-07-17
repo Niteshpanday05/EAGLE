@@ -5,6 +5,10 @@ from apps.products.models import Category
 
 class CategorySerializer(serializers.ModelSerializer):
 
+    product_count = serializers.IntegerField(
+        read_only=True
+    )
+
     class Meta:
         model = Category
 
@@ -13,4 +17,5 @@ class CategorySerializer(serializers.ModelSerializer):
             "name",
             "slug",
             "image",
+            "product_count",
         )
