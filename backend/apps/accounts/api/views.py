@@ -2,9 +2,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from accounts.api.serializers import LoginSerializer
-from backend.apps.accounts.services.auth.auth_service import AuthService
-
+from apps.accounts.api.serializers import LoginSerializer
+from apps.accounts.services.auth.auth_service import AuthService
 
 class LoginView(APIView):
 
