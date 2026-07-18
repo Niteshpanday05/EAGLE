@@ -2,8 +2,8 @@ from django.conf import settings
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from accounts.services.email.email_service import EmailService
-from accounts.tokens import email_verification_token
+from apps.accounts.services.email.email_service import EmailService
+from apps.accounts.tokens import email_verification_token
 
 
 class EmailVerificationService:

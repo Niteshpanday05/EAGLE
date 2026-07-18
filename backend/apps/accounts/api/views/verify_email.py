@@ -1,11 +1,11 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from accounts.api.serializers.verify_email import (
+from apps.accounts.api.serializers.verify_email import (
     VerifyEmailSerializer,
 )
 
-from accounts.services.auth.email_verification_service import (
+from apps.accounts.services.auth.email_verification_service import (
     EmailVerificationService,
 )
 

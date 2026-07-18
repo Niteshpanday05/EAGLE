@@ -4,7 +4,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from accounts.services.email.email_service import EmailService
+from apps.accounts.services.email.email_service import EmailService
 
 User = get_user_model()
 

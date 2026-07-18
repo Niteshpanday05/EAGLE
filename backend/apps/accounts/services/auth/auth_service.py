@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 
-from accounts.selectors.user_selector import UserSelector
-from backend.apps.accounts.services.auth.token_service import TokenService
+from apps.accounts.selectors.user_selector import UserSelector
+from apps.accounts.services.auth.token_service import TokenService
 
-from accounts.models import User
+from apps.accounts.models import User
 
 class AuthService:
 

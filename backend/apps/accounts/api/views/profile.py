@@ -1,7 +1,7 @@
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from accounts.api.serializers.user import UserSerializer
+from apps.accounts.api.serializers.user import UserSerializer
 
 
 class MeView(RetrieveAPIView):

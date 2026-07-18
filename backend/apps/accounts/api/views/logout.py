@@ -3,8 +3,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from accounts.api.serializers.logout import LogoutSerializer
-from accounts.services.auth.logout_service import LogoutService
+from apps.accounts.api.serializers.logout import LogoutSerializer
+from apps.accounts.services.auth.logout_service import LogoutService
 
 
 class LogoutView(GenericAPIView):

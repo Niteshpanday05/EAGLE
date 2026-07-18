@@ -2,10 +2,10 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from accounts.api.serializers.forgot_password import (
+from apps.accounts.api.serializers.forgot_password import (
     ForgotPasswordSerializer,
 )
-from accounts.services.auth.forgot_password_service import (
+from apps.accounts.services.auth.forget_password_service import (
     ForgotPasswordService,
 )
 

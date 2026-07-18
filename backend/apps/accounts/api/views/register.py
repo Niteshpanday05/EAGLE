@@ -2,9 +2,9 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from accounts.api.serializers.register import RegisterSerializer
-from accounts.api.serializers.user import UserSerializer
-from backend.apps.accounts.services.auth.auth_service import AuthService
+from apps.accounts.api.serializers.register import RegisterSerializer
+from apps.accounts.api.serializers.user import UserSerializer
+from apps.accounts.services.auth.auth_service import AuthService
 
 
 class RegisterView(GenericAPIView):
