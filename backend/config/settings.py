@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",   # Next.js
-    "http://127.0.0.1:3000",
+    "http://localhost:8000",
 ]
 
 MEDIA_URL = "/media/"
