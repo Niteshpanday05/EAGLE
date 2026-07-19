@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     "rest_framework",
+     "corsheaders",
      
     "apps.products",
     
@@ -58,6 +61,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -147,3 +152,12 @@ REST_FRAMEWORK = {
         "rest_framework.filters.OrderingFilter",
     ],
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",   # Next.js
+    "http://127.0.0.1:3000",
+]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
