@@ -23,6 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/auth/", include("apps.accounts.urls")),
     path("api/v1/products/", include("apps.products.urls")),
+     path(
+        "api/v1/cart/",
+        include("apps.cart.api.urls"),
+    ),
 ]
 from django.conf import settings
 from django.conf.urls.static import static
