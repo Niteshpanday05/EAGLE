@@ -14,7 +14,11 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
 
         if serializer.is_valid():
-            data = AuthService.login(serializer.validated_data)
+            data = AuthService.login(
+                email=serializer.validated_data["email"],
+                password=serializer.validated_data["password"],
+            )
+
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -3,6 +3,7 @@ from rest_framework.exceptions import AuthenticationFailed
 
 from apps.accounts.selectors.user_selector import UserSelector
 from apps.accounts.services.auth.token_service import TokenService
+from apps.accounts.api.serializers.user import UserSerializer
 
 from apps.accounts.models import User
 
@@ -29,10 +30,10 @@ class AuthService:
         tokens = TokenService.generate_tokens(user)
 
         return {
-            "user": user,
-            "tokens": tokens,
-        }
-        
+        "user": UserSerializer(user).data,
+        "tokens": tokens,
+    }
+            
     @staticmethod
     def register(data):
 
@@ -52,6 +53,6 @@ class AuthService:
         tokens = TokenService.generate_tokens(user)
 
         return {
-            "user": user,
-            "tokens": tokens,
-        }
+        "user": UserSerializer(user).data,
+        "tokens": tokens,
+    }
