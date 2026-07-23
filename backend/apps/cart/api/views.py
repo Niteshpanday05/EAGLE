@@ -17,7 +17,7 @@ class CartAPIView(APIView):
     GET /api/v1/cart/
     """
 
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         cart = get_cart(request.user)

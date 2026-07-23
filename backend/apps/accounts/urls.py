@@ -7,7 +7,8 @@ from apps.accounts.api.views.logout import LogoutView
 from apps.accounts.api.views.verify_email import VerifyEmailView
 from apps.accounts.api.views.forgot_password import ForgotPasswordView
 urlpatterns = [
-    path("login/", LoginView.as_view(), name="login"),
+   path("login/", LoginView.as_view(), name="login"),
+    # path("refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("register/", RegisterView.as_view(), name="register"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("me/", MeView.as_view(), name="me"),
