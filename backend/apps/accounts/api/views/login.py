@@ -11,6 +11,8 @@ class LoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+            print("===== LOGIN VIEW EXECUTED =====")
+    def post(self, request):
         serializer = LoginSerializer(data=request.data)
 
         if serializer.is_valid():
