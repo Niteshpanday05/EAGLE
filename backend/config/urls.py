@@ -27,6 +27,10 @@ urlpatterns = [
         "api/v1/cart/",
         include("apps.cart.api.urls"),
     ),
+       path(
+        "api/v1/orders/",
+        include("apps.orders.api.urls"),
+    ),
 ]
 from django.conf import settings
 from django.conf.urls.static import static
