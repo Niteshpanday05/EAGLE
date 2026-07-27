@@ -1,0 +1,18 @@
+from django.core.exceptions import ObjectDoesNotExist
+
+from apps.addresses.models import Address
+from apps.checkout.exceptions import InvalidShippingAddressException
+
+
+class ShippingService:
+
+    @staticmethod
+    def validate_address(user, address_id):
+        try:
+            return Address.objects.get(
+                id=address_id,
+                user=user,
+                is_active=True,
+            )
+        except ObjectDoesNotExist:
+            raise InvalidShippingAddressException()
