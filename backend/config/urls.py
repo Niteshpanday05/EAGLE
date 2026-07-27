@@ -31,6 +31,7 @@ urlpatterns = [
         "api/v1/orders/",
         include("apps.orders.api.urls"),
     ),
+    path("addresses/", include("apps.addresses.urls")),
 ]
 from django.conf import settings
 from django.conf.urls.static import static
