@@ -44,6 +44,7 @@ INSTALLED_APPS = [
      "corsheaders",
      
     "apps.products",
+    "apps.addresses",
     
     "apps.categories",
     
