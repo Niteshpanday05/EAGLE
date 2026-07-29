@@ -6,6 +6,7 @@ from apps.products.models import Product
 from .models import Cart, CartItem
 
 
+
 class CartService:
     """
     Business logic for shopping cart.

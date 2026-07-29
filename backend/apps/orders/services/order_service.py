@@ -4,7 +4,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 
 from apps.addresses.models import Address
-from apps.cart.services import CartService
+from apps.cart.selectors import get_cart
 from apps.orders.models import Order
 from apps.orders.services.order_item_service import (
     OrderItemService,
@@ -29,8 +29,7 @@ class OrderService:
         notes="",
     ):
 
-        cart = CartService.get_cart(user)
-
+        cart = get_cart(user)
         if not cart.items.exists():
             raise ValueError("Cart is empty.")
 
