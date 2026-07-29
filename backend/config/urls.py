@@ -32,9 +32,9 @@ urlpatterns = [
         "api/v1/orders/",
         include("apps.orders.api.urls"),
     ),
-    path("addresses/", include("apps.addresses.urls")),
+    path("api/v1/addresses/", include("apps.addresses.urls")),
     path(
-        "checkout/",
+        "api/v1/checkout/",
         include("apps.checkout.urls"),
     ),
 ]
