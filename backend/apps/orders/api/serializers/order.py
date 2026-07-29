@@ -7,7 +7,7 @@ from apps.orders.models import (
 )
 
 
-class ShippingAddressResponseSerializer(serializers.ModelSerializer):
+class ShippingAddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShippingAddress
@@ -55,7 +55,7 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
-    shipping_address = ShippingAddressResponseSerializer(
+    shipping_address = ShippingAddressSerializer(
         read_only=True,
     )
 
@@ -65,10 +65,12 @@ class OrderSerializer(serializers.ModelSerializer):
             "id",
             "order_number",
             "status",
+            "payment_method",
             "payment_status",
             "subtotal",
             "shipping",
             "tax",
+            "discount",
             "total",
             "notes",
             "items",

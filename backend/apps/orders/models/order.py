@@ -3,24 +3,14 @@ import uuid
 from django.conf import settings
 from django.db import models
 
-
-class OrderStatus(models.TextChoices):
-    PENDING = "pending", "Pending"
-    PROCESSING = "processing", "Processing"
-    SHIPPED = "shipped", "Shipped"
-    DELIVERED = "delivered", "Delivered"
-    CANCELLED = "cancelled", "Cancelled"
-
-
-class PaymentStatus(models.TextChoices):
-    PENDING = "pending", "Pending"
-    PAID = "paid", "Paid"
-    FAILED = "failed", "Failed"
-    REFUNDED = "refunded", "Refunded"
+from apps.orders.choices import (
+    OrderStatus,
+    PaymentMethod,
+    PaymentStatus,
+)
 
 
 class Order(models.Model):
-
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -29,20 +19,24 @@ class Order(models.Model):
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="orders",
     )
 
     order_number = models.CharField(
         max_length=30,
         unique=True,
-        db_index=True,
     )
 
     status = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=OrderStatus.choices,
         default=OrderStatus.PENDING,
+    )
+
+    payment_method = models.CharField(
+        max_length=20,
+        choices=PaymentMethod.choices,
     )
 
     payment_status = models.CharField(
@@ -54,6 +48,7 @@ class Order(models.Model):
     subtotal = models.DecimalField(
         max_digits=10,
         decimal_places=2,
+        default=0,
     )
 
     shipping = models.DecimalField(
@@ -68,9 +63,16 @@ class Order(models.Model):
         default=0,
     )
 
+    discount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+    )
+
     total = models.DecimalField(
         max_digits=10,
         decimal_places=2,
+        default=0,
     )
 
     notes = models.TextField(
@@ -86,8 +88,7 @@ class Order(models.Model):
     )
 
     class Meta:
-        db_table = "orders"
-        ordering = ["-created_at"]
+        ordering = ("-created_at",)
 
     def __str__(self):
         return self.order_number

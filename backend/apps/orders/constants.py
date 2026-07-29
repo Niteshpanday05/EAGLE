@@ -1,0 +1,9 @@
+from decimal import Decimal
+
+DEFAULT_SHIPPING_COST = Decimal("0.00")
+DEFAULT_TAX = Decimal("0.00")
+DEFAULT_DISCOUNT = Decimal("0.00")
+
+ORDER_NUMBER_PREFIX = "ORD"
+
+ORDER_NUMBER_LENGTH = 8

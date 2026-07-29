@@ -1,23 +1,25 @@
-from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.orders.api.serializers.order import OrderSerializer
-from apps.orders.selectors.order_selector import (
-    OrderSelector,
-)
+from apps.orders.api.serializers import OrderSerializer
+from apps.orders.selectors import OrderSelector
 
 
-class OrderDetailAPIView(RetrieveAPIView):
-
-    serializer_class = OrderSerializer
-
+class OrderDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
-    lookup_field = "id"
+    def get(
+        self,
+        request,
+        order_number,
+    ):
 
-    def get_object(self):
-
-        return OrderSelector.get_order(
-            self.request.user,
-            self.kwargs["id"],
+        order = OrderSelector.get_order(
+            request.user,
+            order_number,
         )
+
+        serializer = OrderSerializer(order)
+
+        return Response(serializer.data)

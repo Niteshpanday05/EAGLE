@@ -1,27 +1,29 @@
 from django.urls import path
 
-from .views import (
-    CheckoutAPIView,
-    OrderDetailAPIView,
-    OrderListAPIView,
+from apps.orders.api.views.order_detail import (
+    OrderDetailView,
+)
+from apps.orders.api.views.order_list import (
+    OrderListView,
+)
+from apps.orders.api.views.place_order import (
+    PlaceOrderView,
 )
 
 urlpatterns = [
     path(
         "",
-        OrderListAPIView.as_view(),
+        OrderListView.as_view(),
         name="order-list",
     ),
-
     path(
-        "checkout/",
-        CheckoutAPIView.as_view(),
-        name="checkout",
+        "place/",
+        PlaceOrderView.as_view(),
+        name="place-order",
     ),
-
     path(
-        "<uuid:id>/",
-        OrderDetailAPIView.as_view(),
+        "<str:order_number>/",
+        OrderDetailView.as_view(),
         name="order-detail",
     ),
 ]
