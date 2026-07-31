@@ -22,6 +22,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    
+     path(
+        "api/v1/hero/",
+        include("apps.hero.urls"),
+    ),
+    
     path("api/v1/auth/", include("apps.accounts.urls")),
     path("api/v1/products/", include("apps.products.urls")),
     path(
@@ -37,6 +43,7 @@ urlpatterns = [
         "api/v1/checkout/",
         include("apps.checkout.urls"),
     ),
+    
 ]
 from django.conf import settings
 from django.conf.urls.static import static
