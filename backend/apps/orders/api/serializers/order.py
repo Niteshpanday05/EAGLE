@@ -71,6 +71,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "status",
             "payment_method",
             "payment_status",
+            "payment_reference",   # <-- Add this
             "subtotal",
             "shipping",
             "tax",

@@ -34,8 +34,22 @@ class OrderService:
 
         cart = get_cart(user)
 
-        if not cart.items.exists():
-            raise ValueError("Cart is empty.")
+        print("=" * 60)
+        print("ORDER DEBUG")
+        print("User ID:", user.id)
+        print("User:", user)
+        print("Cart ID:", cart.id)
+        print("Cart Owner:", cart.user_id)
+        print("Items Count:", cart.items.count())
+
+        for item in cart.items.all():
+            print(
+                f"Product ID: {item.product.id}, "
+                f"Product: {item.product.name}, "
+                f"Quantity: {item.quantity}"
+            )
+
+        print("=" * 60)
 
         address = get_object_or_404(
             Address,

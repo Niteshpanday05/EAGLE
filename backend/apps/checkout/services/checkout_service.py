@@ -24,19 +24,19 @@ class CheckoutService:
 
         items = [
             {
-                "id": item.id,
-                "product_id": item.product.id,
-                "product_name": item.product.name,
-                "thumbnail": (
-                    item.product.thumbnail.url
-                    if item.product.thumbnail
-                    else ""
-                ),
-                "price": item.product.price,
-                "quantity": item.quantity,
-                "subtotal": item.product.price * item.quantity,
-            }
-            for item in cart.items.all()
+        "id": item.id,
+        "product_id": item.product.id,
+        "product_name": item.product.name,
+        "thumbnail": (
+            item.product.thumbnail.url
+            if item.product.thumbnail
+            else ""
+        ),
+        "price": item.product.final_price,
+        "quantity": item.quantity,
+        "subtotal": item.product.final_price * item.quantity,
+    }
+    for item in cart.items.all()
         ]
 
         return {

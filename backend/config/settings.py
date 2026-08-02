@@ -267,3 +267,10 @@ PAYMENT_CURRENCY = config(
     "PAYMENT_CURRENCY",
     default="NPR"
 )
+
+
+# settings.py
+from decimal import Decimal
+
+DEFAULT_SHIPPING_COST = Decimal("100.00")
+DEFAULT_TAX_RATE = Decimal("0.13")
