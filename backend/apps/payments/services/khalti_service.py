@@ -1,171 +1,308 @@
 import logging
 from typing import Any
 
+import requests
+from django.conf import settings
+
 from apps.payments.models import Payment
+
+from .base_gateway import BaseGateway
+
 
 logger = logging.getLogger(__name__)
 
 
-class KhaltiService:
+class KhaltiService(BaseGateway):
     """
-    Khalti Payment Gateway Service.
+    Khalti payment gateway integration.
 
-    Responsibilities:
-    - Initiate payment
-    - Verify payment
-    - Refund payment
-    - Handle gateway response
+    Handles:
+    - Payment initiation
+    - Payment verification
+    - Refunds
     """
+
+
+    gateway_name = "KHALTI"
+
 
     def __init__(self):
-        """
-        Initialize Khalti configuration.
 
-        Example:
-            self.secret_key
-            self.base_url
-            self.headers
-        """
-        pass
+        self.secret_key = (
+            settings.KHALTI_SECRET_KEY
+        )
 
-    # ==========================================================
-    # Payment Initialization
-    # ==========================================================
+        self.base_url = (
+            settings.KHALTI_BASE_URL
+        )
 
-    def initiate_payment(
+
+
+    # =====================================
+    # Initiate Payment
+    # =====================================
+
+    def initiate(
         self,
         payment: Payment,
     ) -> dict[str, Any]:
-        """
-        Create a payment session with Khalti.
 
-        Returns:
-            {
-                "success": bool,
-                "payment_url": str,
-                "transaction_id": str,
-                "gateway_payment_id": str,
-                "message": str,
-                "response": dict,
-            }
-        """
 
         logger.info(
-            "Initiating Khalti payment: %s",
+            "Initiating Khalti payment %s",
             payment.reference,
         )
 
-        # TODO:
-        # Build payload
-        # Send request to Khalti
-        # Parse response
 
-        return {
-            "success": False,
-            "message": "Not implemented.",
-            "response": {},
+        payload = {
+
+            "return_url":
+                settings.KHALTI_RETURN_URL,
+
+
+            "website_url":
+                settings.FRONTEND_URL,
+
+
+            "amount":
+                int(payment.amount * 100),
+
+
+            "purchase_order_id":
+                payment.reference,
+
+
+            "purchase_order_name":
+                f"Order {payment.order.order_number}",
+
+
         }
 
-    # ==========================================================
-    # Payment Verification
-    # ==========================================================
 
-    def verify_payment(
+
+        try:
+
+            response = requests.post(
+
+                f"{self.base_url}/epayment/initiate/",
+
+                json=payload,
+
+                headers=self.headers(),
+
+                timeout=15,
+
+            )
+
+
+            data = response.json()
+
+
+
+            if response.status_code != 200:
+
+                return {
+
+                    "success": False,
+
+                    "message":
+                        data.get(
+                            "detail",
+                            "Khalti initiation failed"
+                        ),
+
+                    "response":
+                        data,
+
+                }
+
+
+
+            return {
+
+                "success": True,
+
+                "payment_url":
+                    data.get(
+                        "payment_url"
+                    ),
+
+                "gateway_payment_id":
+                    data.get(
+                        "pidx"
+                    ),
+
+                "response":
+                    data,
+
+            }
+
+
+
+        except Exception as e:
+
+
+            logger.exception(
+                "Khalti initiate error"
+            )
+
+
+            return {
+
+                "success":False,
+
+                "message":str(e),
+
+            }
+
+
+
+    # =====================================
+    # Verify Payment
+    # =====================================
+
+
+    def verify(
         self,
         payment: Payment,
         **kwargs,
     ) -> dict[str, Any]:
-        """
-        Verify Khalti payment.
 
-        kwargs may contain:
-            pidx
-            token
-            transaction_id
-            etc.
-        """
 
-        logger.info(
-            "Verifying Khalti payment: %s",
-            payment.reference,
+        pidx = kwargs.get(
+            "pidx"
         )
 
-        # TODO:
-        # Verify payment with Khalti
 
-        return {
-            "success": False,
-            "message": "Not implemented.",
-            "transaction_id": "",
-            "gateway_payment_id": "",
-            "response": {},
-        }
+        if not pidx:
 
-    # ==========================================================
+            return {
+
+                "success":False,
+
+                "message":
+                    "Missing Khalti pidx",
+
+            }
+
+
+
+        try:
+
+
+            response = requests.post(
+
+                f"{self.base_url}/epayment/lookup/",
+
+                json={
+                    "pidx":pidx
+                },
+
+                headers=self.headers(),
+
+                timeout=15,
+
+            )
+
+
+            data=response.json()
+
+
+
+            if data.get(
+                "status"
+            ) == "Completed":
+
+
+                return {
+
+                    "success":True,
+
+                    "transaction_id":
+                        data.get(
+                            "transaction_id"
+                        ),
+
+                    "gateway_payment_id":
+                        pidx,
+
+                    "response":
+                        data,
+
+                }
+
+
+
+            return {
+
+                "success":False,
+
+                "message":
+                    data.get(
+                        "status"
+                    ),
+
+                "response":
+                    data,
+
+            }
+
+
+
+        except Exception as e:
+
+
+            logger.exception(
+                "Khalti verification failed"
+            )
+
+
+            return {
+
+                "success":False,
+
+                "message":str(e),
+
+            }
+
+
+
+    # =====================================
     # Refund
-    # ==========================================================
+    # =====================================
 
-    def refund_payment(
+
+    def refund(
         self,
         payment: Payment,
+        amount=None,
     ) -> dict[str, Any]:
-        """
-        Refund a Khalti payment.
-        """
 
-        logger.info(
-            "Refund request: %s",
-            payment.reference,
-        )
-
-        # TODO:
-        # Refund payment
 
         return {
-            "success": False,
-            "message": "Refund not implemented.",
-            "response": {},
+
+            "success":False,
+
+            "message":
+                "Khalti refund API not configured",
+
         }
 
-    # ==========================================================
+
+
+    # =====================================
     # Helpers
-    # ==========================================================
+    # =====================================
 
-    def build_payload(
-        self,
-        payment: Payment,
-    ) -> dict[str, Any]:
-        """
-        Build initiate payment payload.
-        """
 
-        return {}
+    def headers(self):
 
-    def build_headers(self) -> dict[str, str]:
-        """
-        Build request headers.
-        """
+        return {
 
-        return {}
+            "Authorization":
+                f"Key {self.secret_key}",
 
-    def parse_response(
-        self,
-        response: dict[str, Any],
-    ) -> dict[str, Any]:
-        """
-        Normalize Khalti response.
-        """
+            "Content-Type":
+                "application/json",
 
-        return response
-
-    def validate_signature(
-        self,
-        payload: dict[str, Any],
-    ) -> bool:
-        """
-        Validate callback signature.
-
-        Implement if required by the gateway.
-        """
-
-        return True
+        }

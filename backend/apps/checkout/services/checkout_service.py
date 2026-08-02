@@ -8,6 +8,8 @@ from apps.checkout.services.stock_service import StockService
 
 
 class CheckoutService:
+    
+    
 
     @classmethod
     def get_checkout(cls, user):

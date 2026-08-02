@@ -8,70 +8,98 @@ from apps.payments.models import Payment
 
 class BaseGateway(ABC):
     """
-    Base interface for all payment gateways.
+    Abstract payment gateway interface.
 
-    Every payment provider (Khalti, eSewa, Stripe, etc.)
-    must implement this interface.
+    Every payment provider must implement
+    payment initiation and verification.
+
+    Examples:
+        - KhaltiGateway
+        - EsewaGateway
+        - StripeGateway
     """
 
-    gateway_name: str
+    gateway_name: str = ""
+
 
     @abstractmethod
-    def initiate(self, payment: Payment) -> dict[str, Any]:
+    def initiate(
+        self,
+        payment: Payment,
+    ) -> dict[str, Any]:
         """
-        Initialize a payment.
+        Create payment request.
 
-        Returns:
-            {
-                "success": True,
-                "payment_url": "...",
-                "transaction_id": "...",
-                ...
-            }
+        Expected response:
+
+        {
+            "success": True,
+            "payment_url": "",
+            "gateway_payment_id": "",
+        }
         """
+
         raise NotImplementedError
 
+
+
     @abstractmethod
-    def verify(self, payment: Payment, **kwargs) -> dict[str, Any]:
+    def verify(
+        self,
+        payment: Payment,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
         """
         Verify payment with gateway.
 
-        Returns:
-            {
-                "success": True,
-                "transaction_id": "...",
-                "gateway_payment_id": "...",
-                ...
-            }
+        Expected response:
+
+        {
+            "success": True,
+            "transaction_id": "",
+            "gateway_payment_id": "",
+        }
         """
+
         raise NotImplementedError
 
-    @abstractmethod
+
+
     def refund(
         self,
         payment: Payment,
         amount: float | None = None,
     ) -> dict[str, Any]:
         """
-        Refund a payment.
+        Refund payment.
 
-        Returns:
-            {
-                "success": True,
-                "refund_id": "...",
-            }
+        Override only if gateway supports refunds.
         """
-        raise NotImplementedError
 
-    @abstractmethod
+        return {
+            "success": False,
+            "message": (
+                f"{self.gateway_name} "
+                "does not support refunds"
+            ),
+        }
+
+
+
     def webhook(
         self,
         payload: dict[str, Any],
     ) -> dict[str, Any]:
         """
-        Process webhook payload.
+        Handle gateway webhook.
 
-        Returns normalized gateway response.
+        Override only if gateway provides webhooks.
         """
-        raise NotImplementedError
-    
+
+        return {
+            "success": False,
+            "message": (
+                f"{self.gateway_name} "
+                "does not support webhooks"
+            ),
+        }

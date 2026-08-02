@@ -2,28 +2,25 @@ from django.db import models
 from django.utils import timezone
 
 from apps.orders.models import Order
-from .choices import Currency, PaymentMethod, PaymentStatus
+
+from .choices import (
+    Currency,
+    PaymentMethod,
+    PaymentStatus,
+)
 
 
 class Payment(models.Model):
     """
-    One payment record per order.
-    Supports COD, Khalti, eSewa and Stripe.
+    Stores payment information for an order.
+    One order has one payment record.
     """
-
-    # ==========================
-    # Relationships
-    # ==========================
 
     order = models.OneToOneField(
         Order,
         on_delete=models.PROTECT,
         related_name="payment",
     )
-
-    # ==========================
-    # Payment Information
-    # ==========================
 
     payment_method = models.CharField(
         max_length=20,
@@ -48,40 +45,38 @@ class Payment(models.Model):
         default=Currency.NPR,
     )
 
-    # ==========================
-    # Internal Reference
-    # ==========================
-
+    # Internal payment reference
     reference = models.CharField(
         max_length=100,
         unique=True,
         db_index=True,
-        help_text="Internal payment reference.",
     )
 
+    # Prevent duplicate payment requests
+    idempotency_key = models.CharField(
+        max_length=100,
+        unique=True,
+        null=True,
+        blank=True,
+    )
+
+    # Gateway transaction information
     transaction_id = models.CharField(
         max_length=255,
-        unique=True,
-        blank=True,
         null=True,
+        blank=True,
         db_index=True,
-        help_text="Transaction ID returned by payment gateway.",
     )
 
-    # ==========================
-    # Gateway Information
-    # ==========================
-
     gateway = models.CharField(
-        max_length=30,
+        max_length=50,
         blank=True,
-        help_text="Gateway used for this payment.",
     )
 
     gateway_payment_id = models.CharField(
         max_length=255,
-        blank=True,
         null=True,
+        blank=True,
     )
 
     gateway_response = models.JSONField(
@@ -89,17 +84,14 @@ class Payment(models.Model):
         blank=True,
     )
 
-    # ==========================
-    # Failure Information
-    # ==========================
+    metadata = models.JSONField(
+        default=dict,
+        blank=True,
+    )
 
     failure_reason = models.TextField(
         blank=True,
     )
-
-    # ==========================
-    # Payment Dates
-    # ==========================
 
     paid_at = models.DateTimeField(
         null=True,
@@ -111,10 +103,6 @@ class Payment(models.Model):
         blank=True,
     )
 
-    # ==========================
-    # Audit Fields
-    # ==========================
-
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
@@ -123,23 +111,46 @@ class Payment(models.Model):
         auto_now=True,
     )
 
+
     class Meta:
         db_table = "payments"
-        ordering = ["-created_at"]
 
-        indexes = [
-            models.Index(fields=["status"]),
-            models.Index(fields=["payment_method"]),
-            models.Index(fields=["reference"]),
-            models.Index(fields=["transaction_id"]),
+        ordering = [
+            "-created_at"
         ]
 
+        indexes = [
+            models.Index(
+                fields=[
+                    "status"
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "payment_method"
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "reference"
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "transaction_id"
+                ]
+            ),
+        ]
+
+
     def __str__(self):
-        return f"{self.reference} ({self.status})"
+        return f"{self.reference} - {self.status}"
+
 
     @property
     def is_paid(self):
         return self.status == PaymentStatus.SUCCESS
+
 
     @property
     def can_retry(self):
@@ -148,31 +159,56 @@ class Payment(models.Model):
             PaymentStatus.CANCELLED,
         ]
 
+
     @property
     def can_refund(self):
         return self.status == PaymentStatus.SUCCESS
 
-    def mark_processing(self):
-        self.status = PaymentStatus.PROCESSING
-        self.save(update_fields=["status", "updated_at"])
 
-    def mark_success(self):
+    def mark_processing(self):
+
+        self.status = PaymentStatus.PROCESSING
+
+        self.save(
+            update_fields=[
+                "status",
+                "updated_at",
+            ]
+        )
+
+
+    def mark_success(
+        self,
+        transaction_id=None,
+        gateway_response=None,
+    ):
+
         now = timezone.now()
 
         self.status = PaymentStatus.SUCCESS
         self.paid_at = now
         self.verified_at = now
 
+        if transaction_id:
+            self.transaction_id = transaction_id
+
+        if gateway_response:
+            self.gateway_response = gateway_response
+
         self.save(
             update_fields=[
                 "status",
                 "paid_at",
                 "verified_at",
+                "transaction_id",
+                "gateway_response",
                 "updated_at",
             ]
         )
 
+
     def mark_failed(self, reason=""):
+
         self.status = PaymentStatus.FAILED
         self.failure_reason = reason
 
@@ -184,7 +220,9 @@ class Payment(models.Model):
             ]
         )
 
+
     def mark_cancelled(self):
+
         self.status = PaymentStatus.CANCELLED
 
         self.save(
@@ -194,7 +232,9 @@ class Payment(models.Model):
             ]
         )
 
+
     def mark_refunded(self):
+
         self.status = PaymentStatus.REFUNDED
 
         self.save(

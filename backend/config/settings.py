@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -190,3 +191,79 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
+
+# stripe payment integrations# Payment Settings
+# =========================
+# Payment Gateway Settings
+# =========================
+
+
+# Stripe
+
+STRIPE_SECRET_KEY = config(
+    "STRIPE_SECRET_KEY",
+    default="sk_test_dummy_key"
+)
+
+STRIPE_PUBLIC_KEY = config(
+    "STRIPE_PUBLIC_KEY",
+    default="pk_test_dummy_key"
+)
+
+STRIPE_WEBHOOK_SECRET = config(
+    "STRIPE_WEBHOOK_SECRET",
+    default=""
+)
+
+
+# =========================
+# Khalti
+# =========================
+
+KHALTI_SECRET_KEY = config(
+    "KHALTI_SECRET_KEY",
+    default="test_secret_key"
+)
+
+KHALTI_PUBLIC_KEY = config(
+    "KHALTI_PUBLIC_KEY",
+    default="test_public_key"
+)
+
+KHALTI_BASE_URL = config(
+    "KHALTI_BASE_URL",
+    default="https://a.khalti.com/api/v2"
+)
+
+
+# =========================
+# eSewa
+# =========================
+# =========================
+# eSewa
+# =========================
+
+ESEWA_SECRET_KEY = config(
+    "ESEWA_SECRET_KEY",
+    default="test_esewa_secret_key"
+)
+
+ESEWA_MERCHANT_CODE = config(
+    "ESEWA_MERCHANT_CODE",
+    default="EPAYTEST"
+)
+
+ESEWA_BASE_URL = config(
+    "ESEWA_BASE_URL",
+    default="https://rc-epay.esewa.com.np/api/epay/main/v2/form"
+)
+
+
+# =========================
+# General Payment
+# =========================
+
+PAYMENT_CURRENCY = config(
+    "PAYMENT_CURRENCY",
+    default="NPR"
+)

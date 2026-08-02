@@ -5,8 +5,9 @@ from .views import PaymentViewSet
 
 router = DefaultRouter()
 
+
 router.register(
-    "",
+    "payments",
     PaymentViewSet,
     basename="payments",
 )
