@@ -7,11 +7,20 @@ from apps.orders.api.serializers import (
     OrderSerializer,
     PlaceOrderSerializer,
 )
+
 from apps.orders.services import OrderService
+
+from apps.payments.services.payment_service import (
+    PaymentService,
+)
 
 
 class PlaceOrderView(APIView):
-    permission_classes = [IsAuthenticated]
+
+    permission_classes = [
+        IsAuthenticated
+    ]
+
 
     def post(self, request):
 
@@ -19,27 +28,77 @@ class PlaceOrderView(APIView):
             data=request.data,
         )
 
+
         serializer.is_valid(
-            raise_exception=True,
+            raise_exception=True
         )
 
+
         order = OrderService.place_order(
+
             user=request.user,
-            address_id=serializer.validated_data[
+
+            address_id=
+            serializer.validated_data[
                 "address_id"
             ],
-            payment_method=serializer.validated_data[
+
+            payment_method=
+            serializer.validated_data[
                 "payment_method"
             ],
-            notes=serializer.validated_data.get(
+
+            notes=
+            serializer.validated_data.get(
                 "notes",
                 "",
             ),
         )
 
-        response = OrderSerializer(order)
+
+        # ===========================
+        # Create Payment
+        # ===========================
+
+        payment = PaymentService.create_payment(
+            order
+        )
+
+
+        order_data = OrderSerializer(
+            order
+        ).data
+
+
+
+        response = {
+
+            **order_data,
+
+
+            "payment": {
+
+                "reference":
+                    payment.reference,
+
+
+                "method":
+                    payment.payment_method,
+
+
+                "status":
+                    payment.status,
+
+
+            }
+
+        }
+
 
         return Response(
-            response.data,
-            status=status.HTTP_201_CREATED,
+
+            response,
+
+            status=status.HTTP_201_CREATED
+
         )

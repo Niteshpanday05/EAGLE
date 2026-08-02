@@ -1,10 +1,10 @@
 import logging
-import uuid
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
 from apps.orders.models import Order
+
 from apps.payments.models import Payment
 from apps.payments.choices import PaymentMethod
 
@@ -18,29 +18,19 @@ logger = logging.getLogger(__name__)
 
 class PaymentService:
     """
-    Handles all payment operations.
+    Main payment business logic.
+
+    Handles:
+    - Create payment
+    - Select gateway
+    - Initiate payment
+    - Verify payment
+    - Refund payment
     """
 
-
-    GATEWAYS = {
-
-        PaymentMethod.KHALTI:
-            KhaltiService(),
-
-        PaymentMethod.ESEWA:
-            EsewaService(),
-
-        PaymentMethod.STRIPE:
-            StripeService(),
-
-    }
-
-
-
-    # ===============================
+    # =====================================================
     # Create Payment
-    # ===============================
-
+    # =====================================================
 
     @staticmethod
     @transaction.atomic
@@ -48,25 +38,24 @@ class PaymentService:
         order: Order,
     ) -> Payment:
 
-
         payment, created = Payment.objects.get_or_create(
-
             order=order,
-
             defaults={
-
-                "payment_method":
-                    order.payment_method,
-
-
-                "amount":
-                    order.total,
-
-
-                "reference":
-                    f"PAY-{uuid.uuid4().hex[:12].upper()}",
-
+                "payment_method": order.payment_method,
+                "amount": order.total,
+                "reference": (
+                    f"PAY-{order.order_number}"
+                ),
+                "gateway": (
+                    order.payment_method
+                ),
             },
+        )
+
+
+        logger.info(
+            "Payment created: %s",
+            payment.reference,
         )
 
 
@@ -74,49 +63,69 @@ class PaymentService:
 
 
 
-    # ===============================
-    # Retrieve
-    # ===============================
-
+    # =====================================================
+    # Get Payment
+    # =====================================================
 
     @staticmethod
-    def get_payment(
-        payment_id,
-    ):
+    def get_payment_by_reference(
+        reference: str,
+    ) -> Payment:
 
         return get_object_or_404(
             Payment,
-            id=payment_id,
+            reference=reference,
         )
 
 
 
+    # =====================================================
+    # Gateway Selection
+    # =====================================================
+
     @staticmethod
     def get_gateway(
-        payment,
+        payment: Payment,
     ):
 
-        return PaymentService.GATEWAYS.get(
+
+        gateways = {
+
+            PaymentMethod.KHALTI:
+                KhaltiService(),
+
+            PaymentMethod.ESEWA:
+                EsewaService(),
+
+            PaymentMethod.STRIPE:
+                StripeService(),
+
+        }
+
+
+        return gateways.get(
             payment.payment_method
         )
 
 
 
-    # ===============================
+    # =====================================================
     # Initiate Payment
-    # ===============================
-
+    # =====================================================
 
     @classmethod
     @transaction.atomic
     def initiate_payment(
         cls,
-        payment,
+        payment: Payment,
     ):
 
 
-        if payment.payment_method == PaymentMethod.COD:
+        # ----------------------------
+        # COD
+        # ----------------------------
 
+        if payment.payment_method == PaymentMethod.COD:
 
             payment.mark_success()
 
@@ -125,23 +134,30 @@ class PaymentService:
 
                 "success": True,
 
-                "status":
-                    payment.status,
+                "payment_method": "COD",
+
+                "status": payment.status,
 
                 "message":
-                    "COD order confirmed.",
+                    "Order placed with Cash on Delivery.",
 
             }
 
 
 
-        gateway = cls.get_gateway(payment)
+        # ----------------------------
+        # Online Payment
+        # ----------------------------
+
+        gateway = cls.get_gateway(
+            payment
+        )
 
 
-        if not gateway:
+        if gateway is None:
 
             raise ValueError(
-                "Unsupported payment gateway"
+                "Unsupported payment gateway."
             )
 
 
@@ -168,16 +184,15 @@ class PaymentService:
 
 
 
-    # ===============================
+    # =====================================================
     # Verify Payment
-    # ===============================
-
+    # =====================================================
 
     @classmethod
     @transaction.atomic
     def verify_payment(
         cls,
-        payment,
+        payment: Payment,
         **kwargs,
     ):
 
@@ -186,67 +201,55 @@ class PaymentService:
 
             return {
 
-                "success":True,
+                "success": True,
 
-                "message":
-                "COD does not require verification"
+                "status":
+                    payment.status,
 
             }
 
 
 
-        gateway = cls.get_gateway(payment)
+        gateway = cls.get_gateway(
+            payment
+        )
 
 
-        if not gateway:
+        if gateway is None:
 
             raise ValueError(
-                "Unsupported gateway"
+                "Gateway not found."
             )
-
 
 
         response = gateway.verify(
             payment,
-            **kwargs
+            **kwargs,
         )
 
 
         payment.gateway_response = response
 
 
+        payment.save(
+            update_fields=[
+                "gateway_response",
+                "updated_at",
+            ]
+        )
+
 
         if response.get("success"):
 
-
-            payment.mark_success(
-
-                transaction_id =
-                    response.get(
-                        "transaction_id"
-                    ),
-
-                gateway_response=response,
-
-            )
-
-
-            logger.info(
-                "Payment success %s",
-                payment.reference
-            )
-
+            payment.mark_success()
 
         else:
 
-
             payment.mark_failed(
-
                 response.get(
                     "message",
                     "Payment failed"
                 )
-
             )
 
 
@@ -254,42 +257,40 @@ class PaymentService:
 
 
 
-    # ===============================
+    # =====================================================
     # Refund
-    # ===============================
-
+    # =====================================================
 
     @classmethod
     @transaction.atomic
     def refund_payment(
         cls,
-        payment,
+        payment: Payment,
     ):
 
 
         if not payment.can_refund:
 
             raise ValueError(
-                "Payment cannot be refunded"
+                "Payment cannot be refunded."
             )
 
 
-        gateway = cls.get_gateway(payment)
+        gateway = cls.get_gateway(
+            payment
+        )
 
 
-        if not gateway:
+        if gateway is None:
 
             raise ValueError(
-                "Refund not supported"
+                "Refund not supported."
             )
 
 
         response = gateway.refund(
             payment
         )
-
-
-        payment.gateway_response = response
 
 
         if response.get("success"):

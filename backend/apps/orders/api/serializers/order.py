@@ -6,11 +6,15 @@ from apps.orders.models import (
     ShippingAddress,
 )
 
+from apps.payments.models import Payment
+
+
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShippingAddress
+
         fields = (
             "full_name",
             "email",
@@ -21,6 +25,7 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
             "street_address",
             "postal_code",
         )
+
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -35,8 +40,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+
     class Meta:
         model = OrderItem
+
         fields = (
             "id",
             "product",
@@ -48,6 +55,28 @@ class OrderItemSerializer(serializers.ModelSerializer):
         )
 
 
+
+# IMPORTANT:
+# This must be ABOVE OrderSerializer
+
+class OrderPaymentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Payment
+
+        fields = (
+            "reference",
+            "payment_method",
+            "status",
+            "amount",
+            "currency",
+            "transaction_id",
+            "paid_at",
+        )
+
+
+
 class OrderSerializer(serializers.ModelSerializer):
 
     items = OrderItemSerializer(
@@ -55,30 +84,42 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+
     shipping_address = ShippingAddressSerializer(
         read_only=True,
     )
-    
-    payment_reference = serializers.CharField(
-        source="payment.reference",
-        read_only=True,)
+
+
+    payment = OrderPaymentSerializer(
+        read_only=True,
+    )
+
 
     class Meta:
+
         model = Order
+
         fields = (
             "id",
             "order_number",
             "status",
+
             "payment_method",
             "payment_status",
-            "payment_reference",   # <-- Add this
+
+            "payment",
+
             "subtotal",
             "shipping",
             "tax",
             "discount",
             "total",
+
             "notes",
+
             "items",
+
             "shipping_address",
+
             "created_at",
         )
