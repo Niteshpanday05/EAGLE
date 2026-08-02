@@ -43,6 +43,10 @@ urlpatterns = [
         "api/v1/checkout/",
         include("apps.checkout.urls"),
     ),
+    path(
+    "api/v1/payments/",
+    include("apps.payments.api.urls"),
+),
     
 ]
 from django.conf import settings

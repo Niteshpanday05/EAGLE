@@ -58,6 +58,10 @@ class OrderSerializer(serializers.ModelSerializer):
     shipping_address = ShippingAddressSerializer(
         read_only=True,
     )
+    
+    payment_reference = serializers.CharField(
+        source="payment.reference",
+        read_only=True,)
 
     class Meta:
         model = Order

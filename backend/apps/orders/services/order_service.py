@@ -15,6 +15,9 @@ from apps.orders.services.pricing_service import (
 from apps.orders.services.shipping_service import (
     ShippingService,
 )
+from apps.payments.services.payment_service import (
+    PaymentService,
+)
 
 
 class OrderService:
@@ -30,10 +33,10 @@ class OrderService:
     ):
 
         cart = get_cart(user)
+
         if not cart.items.exists():
             raise ValueError("Cart is empty.")
 
-            
         address = get_object_or_404(
             Address,
             id=address_id,
@@ -64,6 +67,12 @@ class OrderService:
             cart=cart,
         )
 
+        # Create payment record
+        payment = PaymentService.create_payment(
+            order
+        )
+
+        # Remove cart items
         cart.items.all().delete()
 
         return order
