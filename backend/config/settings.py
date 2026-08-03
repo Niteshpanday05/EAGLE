@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     "apps.orders",
     "apps.checkout",
     "apps.cart",
+    "apps.hero",
+    "apps.dashboard",
     
     "apps.accounts",
     "django_filters",
@@ -62,7 +64,7 @@ INSTALLED_APPS = [
     
     # homepage
     
-    "apps.hero",
+  
 
 ]
 
@@ -235,11 +237,6 @@ KHALTI_BASE_URL = config(
     default="https://a.khalti.com/api/v2"
 )
 
-
-# =========================
-# eSewa
-# =========================
-# =========================
 # eSewa
 # =========================
 

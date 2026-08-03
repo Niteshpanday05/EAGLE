@@ -46,7 +46,13 @@ urlpatterns = [
     path(
     "api/v1/payments/",
     include("apps.payments.api.urls"),
-),
+    ),
+    
+   path(
+        "api/v1/dashboard/",
+        include("apps.dashboard.urls"),
+    ),
+
     
 ]
 from django.conf import settings
