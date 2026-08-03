@@ -4,9 +4,11 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 
 from apps.orders.models import Order
-
 from apps.payments.models import Payment
-from apps.payments.choices import PaymentMethod
+from apps.payments.choices import (
+    PaymentMethod,
+    PaymentStatus,
+)
 
 from .khalti_service import KhaltiService
 from .esewa_service import EsewaService
@@ -18,11 +20,12 @@ logger = logging.getLogger(__name__)
 
 class PaymentService:
     """
-    Main payment business logic.
+    Handles all payment business logic.
 
-    Handles:
+    Responsibilities:
     - Create payment
-    - Select gateway
+    - Retrieve payment
+    - Select payment gateway
     - Initiate payment
     - Verify payment
     - Refund payment
@@ -43,25 +46,18 @@ class PaymentService:
             defaults={
                 "payment_method": order.payment_method,
                 "amount": order.total,
-                "reference": (
-                    f"PAY-{order.order_number}"
-                ),
-                "gateway": (
-                    order.payment_method
-                ),
+                "reference": f"PAY-{order.order_number}",
+                "gateway": order.payment_method,
             },
         )
 
-
-        logger.info(
-            "Payment created: %s",
-            payment.reference,
-        )
-
+        if created:
+            logger.info(
+                "Payment created: %s",
+                payment.reference,
+            )
 
         return payment
-
-
 
     # =====================================================
     # Get Payment
@@ -77,10 +73,8 @@ class PaymentService:
             reference=reference,
         )
 
-
-
     # =====================================================
-    # Gateway Selection
+    # Select Gateway
     # =====================================================
 
     @staticmethod
@@ -88,26 +82,15 @@ class PaymentService:
         payment: Payment,
     ):
 
-
         gateways = {
-
-            PaymentMethod.KHALTI:
-                KhaltiService(),
-
-            PaymentMethod.ESEWA:
-                EsewaService(),
-
-            PaymentMethod.STRIPE:
-                StripeService(),
-
+            PaymentMethod.KHALTI: KhaltiService(),
+            PaymentMethod.ESEWA: EsewaService(),
+            PaymentMethod.STRIPE: StripeService(),
         }
 
-
         return gateways.get(
-            payment.payment_method
+            payment.payment_method,
         )
-
-
 
     # =====================================================
     # Initiate Payment
@@ -120,39 +103,49 @@ class PaymentService:
         payment: Payment,
     ):
 
+        logger.info(
+            "Initiating payment %s (%s)",
+            payment.reference,
+            payment.payment_method,
+        )
 
-        # ----------------------------
-        # COD
-        # ----------------------------
+        # Prevent duplicate processing
+        if payment.status == PaymentStatus.SUCCESS:
+
+            return {
+                "success": True,
+                "payment_method": payment.payment_method,
+                "status": payment.status,
+                "message": "Payment already completed.",
+            }
+
+        # =================================================
+        # Cash On Delivery
+        # =================================================
 
         if payment.payment_method == PaymentMethod.COD:
 
             payment.mark_success()
 
+            logger.info(
+                "COD payment completed: %s",
+                payment.reference,
+            )
 
             return {
-
                 "success": True,
-
-                "payment_method": "COD",
-
+                "payment_method": payment.payment_method,
                 "status": payment.status,
-
-                "message":
-                    "Order placed with Cash on Delivery.",
-
+                "message": "Order placed with Cash on Delivery.",
             }
 
-
-
-        # ----------------------------
+        # =================================================
         # Online Payment
-        # ----------------------------
+        # =================================================
 
         gateway = cls.get_gateway(
-            payment
+            payment,
         )
-
 
         if gateway is None:
 
@@ -160,29 +153,27 @@ class PaymentService:
                 "Unsupported payment gateway."
             )
 
-
         payment.mark_processing()
 
-
         response = gateway.initiate(
-            payment
+            payment,
         )
 
-
         payment.gateway_response = response
-
 
         payment.save(
             update_fields=[
                 "gateway_response",
                 "updated_at",
-            ]
+            ],
         )
 
+        logger.info(
+            "Payment initiated: %s",
+            payment.reference,
+        )
 
         return response
-
-
 
     # =====================================================
     # Verify Payment
@@ -196,69 +187,64 @@ class PaymentService:
         **kwargs,
     ):
 
-
         if payment.payment_method == PaymentMethod.COD:
 
             return {
-
                 "success": True,
-
-                "status":
-                    payment.status,
-
+                "status": payment.status,
             }
 
-
-
         gateway = cls.get_gateway(
-            payment
+            payment,
         )
-
 
         if gateway is None:
 
             raise ValueError(
-                "Gateway not found."
+                "Unsupported payment gateway."
             )
-
 
         response = gateway.verify(
             payment,
             **kwargs,
         )
 
-
         payment.gateway_response = response
-
 
         payment.save(
             update_fields=[
                 "gateway_response",
                 "updated_at",
-            ]
+            ],
         )
-
 
         if response.get("success"):
 
             payment.mark_success()
+
+            logger.info(
+                "Payment verified: %s",
+                payment.reference,
+            )
 
         else:
 
             payment.mark_failed(
                 response.get(
                     "message",
-                    "Payment failed"
+                    "Payment failed.",
                 )
             )
 
+            logger.warning(
+                "Payment failed: %s",
+                payment.reference,
+            )
 
         return response
 
-
-
     # =====================================================
-    # Refund
+    # Refund Payment
     # =====================================================
 
     @classmethod
@@ -268,34 +254,33 @@ class PaymentService:
         payment: Payment,
     ):
 
-
         if not payment.can_refund:
 
             raise ValueError(
                 "Payment cannot be refunded."
             )
 
-
         gateway = cls.get_gateway(
-            payment
+            payment,
         )
-
 
         if gateway is None:
 
             raise ValueError(
-                "Refund not supported."
+                "Refund not supported for this payment method."
             )
 
-
         response = gateway.refund(
-            payment
+            payment,
         )
-
 
         if response.get("success"):
 
             payment.mark_refunded()
 
+            logger.info(
+                "Payment refunded: %s",
+                payment.reference,
+            )
 
         return response

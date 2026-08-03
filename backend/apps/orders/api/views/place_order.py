@@ -21,84 +21,54 @@ class PlaceOrderView(APIView):
         IsAuthenticated
     ]
 
-
     def post(self, request):
 
         serializer = PlaceOrderSerializer(
             data=request.data,
         )
 
-
         serializer.is_valid(
             raise_exception=True
         )
-
 
         order = OrderService.place_order(
 
             user=request.user,
 
-            address_id=
-            serializer.validated_data[
+            address_id=serializer.validated_data[
                 "address_id"
             ],
 
-            payment_method=
-            serializer.validated_data[
+            payment_method=serializer.validated_data[
                 "payment_method"
             ],
 
-            notes=
-            serializer.validated_data.get(
+            notes=serializer.validated_data.get(
                 "notes",
                 "",
             ),
         )
 
-
         # ===========================
         # Create Payment
         # ===========================
 
-        payment = PaymentService.create_payment(
-            order
-        )
+        payment = order.payment
 
+        payment_response = PaymentService.initiate_payment(
+            payment
+        )
 
         order_data = OrderSerializer(
             order
         ).data
 
-
-
         response = {
-
             **order_data,
-
-
-            "payment": {
-
-                "reference":
-                    payment.reference,
-
-
-                "method":
-                    payment.payment_method,
-
-
-                "status":
-                    payment.status,
-
-
-            }
-
+            "payment": payment_response,
         }
 
-
         return Response(
-
             response,
-
             status=status.HTTP_201_CREATED
-
         )
