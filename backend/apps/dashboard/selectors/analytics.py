@@ -5,7 +5,8 @@ from django.db.models import Count, Sum, Avg
 from django.db.models.functions import TruncDay
 from django.utils import timezone
 
-from apps.orders.models import Order, OrderStatus
+from apps.orders.models import Order
+from apps.orders.choices import OrderStatus
 from apps.orders.models import OrderItem
 
 User = get_user_model()

@@ -1,6 +1,5 @@
 from .analytics import DashboardAnalyticsView
 from .overview import DashboardOverviewView
-from .orders import DashboardOrdersView
 from .products import DashboardProductsView
 from .inventory import DashboardInventoryView
 from .payments import DashboardPaymentsView

@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 
-from apps.orders.models import Order, OrderStatus
+from apps.orders.models import Order
+from apps.orders.choices import OrderStatus
 from apps.products.models import Product
 
 User = get_user_model()

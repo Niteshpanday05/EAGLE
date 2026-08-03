@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from apps.orders.models import Order
+
 
 class OrderStatusSummarySerializer(serializers.Serializer):
     status = serializers.CharField()
@@ -25,3 +27,50 @@ class DashboardOrdersSerializer(serializers.Serializer):
     recent_orders = RecentOrderSerializer(
         many=True
     )
+    
+class DashboardOrderSerializer(serializers.ModelSerializer):
+
+    customer = serializers.CharField(
+        source="user.email",
+        read_only=True
+    )
+
+    class Meta:
+        model = Order
+        fields = [
+            "order_number",
+            "customer",
+            "status",
+            "total",
+            "created_at",
+        ]
+
+class DashboardOrderSerializer(serializers.ModelSerializer):
+
+    customer = serializers.CharField(
+        source="user.email",
+        read_only=True
+    )
+
+
+    class Meta:
+        model = Order
+        fields = [
+            "id",
+            "order_number",
+            "customer",
+            "status",
+            "payment_status",
+            "total_amount",
+            "created_at",
+        ]
+
+
+
+class OrderStatusUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = [
+            "status",
+        ]
