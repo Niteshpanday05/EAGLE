@@ -28,22 +28,7 @@ class DashboardOrdersSerializer(serializers.Serializer):
         many=True
     )
     
-class DashboardOrderSerializer(serializers.ModelSerializer):
 
-    customer = serializers.CharField(
-        source="user.email",
-        read_only=True
-    )
-
-    class Meta:
-        model = Order
-        fields = [
-            "order_number",
-            "customer",
-            "status",
-            "total",
-            "created_at",
-        ]
 
 class DashboardOrderSerializer(serializers.ModelSerializer):
 
