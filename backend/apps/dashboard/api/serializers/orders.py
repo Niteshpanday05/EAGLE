@@ -46,7 +46,7 @@ class DashboardOrderSerializer(serializers.ModelSerializer):
             "customer",
             "status",
             "payment_status",
-            "total_amount",
+            "total",
             "created_at",
         ]
 
