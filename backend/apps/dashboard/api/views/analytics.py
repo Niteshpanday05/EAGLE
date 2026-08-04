@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from apps.dashboard.permissions import IsAdminUser
 from apps.dashboard.services.analytics import DashboardAnalyticsService
 
-from ..serializers.analytics import DailySalesSerializer
+from ..serializers.analytics import DashboardAnalyticsSerializer
 
 
 class DashboardAnalyticsView(APIView):
@@ -21,11 +21,11 @@ class DashboardAnalyticsView(APIView):
     def get(self, request):
         days = int(request.query_params.get("days", 30))
 
-        analytics = DashboardAnalyticsService.get_daily_sales(days)
-
-        serializer = DailySalesSerializer(
-            analytics,
-            many=True,
+        analytics = DashboardAnalyticsService.execute(days)
+        print(analytics)
+        serializer =  DashboardAnalyticsSerializer(
+            analytics
+            
         )
 
         return Response(serializer.data)

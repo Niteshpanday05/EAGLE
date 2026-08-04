@@ -5,5 +5,4 @@ class DashboardAnalyticsService:
 
     @staticmethod
     def execute(days=30):
-
         return DashboardAnalyticsSelector.execute(days)

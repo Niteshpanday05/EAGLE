@@ -47,11 +47,9 @@ class DashboardNotificationsSelector:
     def recent_notifications(cls):
 
         notifications = (
-
-            Notification.objects
-            [:20]
-
-        )
+    Notification.objects
+    .order_by("-created_at")[:20]
+)
 
 
         return [
