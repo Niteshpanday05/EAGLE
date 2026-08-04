@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "apps.cart",
     "apps.hero",
     "apps.dashboard",
+    "apps.notifications",
     
     "apps.accounts",
     "django_filters",

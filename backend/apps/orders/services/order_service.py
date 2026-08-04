@@ -20,6 +20,10 @@ from apps.orders.services.shipping_service import (
     ShippingService,
 )
 
+from apps.orders.services.inventory_service import (
+    InventoryService,
+)
+
 from apps.payments.services.payment_service import (
     PaymentService,
 )
@@ -47,6 +51,8 @@ class OrderService:
     Create shipping snapshot
       ↓
     Create order items
+      ↓
+    Update inventory
       ↓
     Create payment record
       ↓
@@ -158,6 +164,15 @@ class OrderService:
         OrderItemService.create(
             order=order,
             cart=cart,
+        )
+
+
+        # ---------------------------------
+        # Update inventory
+        # ---------------------------------
+
+        InventoryService.reduce_stock(
+            cart=cart
         )
 
 

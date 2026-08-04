@@ -56,6 +56,9 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(
         default=0,
     )
+    low_stock_threshold = models.PositiveIntegerField(
+        default=5
+    )
 
     thumbnail = models.ImageField(
         upload_to="products/",
