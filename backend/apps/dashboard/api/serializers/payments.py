@@ -5,6 +5,8 @@ from rest_framework import serializers
 class PaymentSummarySerializer(serializers.Serializer):
 
     total_payments = serializers.IntegerField()
+    processing_payments = serializers.IntegerField()
+    cancelled_payments = serializers.IntegerField()
 
     successful_payments = serializers.IntegerField()
 
@@ -14,7 +16,7 @@ class PaymentSummarySerializer(serializers.Serializer):
 
     refunded_payments = serializers.IntegerField()
 
-    revenue = serializers.DecimalField(
+    total_revenue = serializers.DecimalField(
         max_digits=12,
         decimal_places=2,
     )
@@ -25,7 +27,7 @@ class PaymentMethodSerializer(serializers.Serializer):
 
     payment_method = serializers.CharField()
 
-    count = serializers.IntegerField()
+    total = serializers.IntegerField()
 
     revenue = serializers.DecimalField(
         max_digits=12,
@@ -38,7 +40,7 @@ class RecentPaymentSerializer(serializers.Serializer):
 
     reference = serializers.CharField()
 
-    order = serializers.CharField()
+    order_number = serializers.CharField()
 
     method = serializers.CharField()
 

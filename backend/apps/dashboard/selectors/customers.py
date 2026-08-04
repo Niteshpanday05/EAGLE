@@ -56,7 +56,7 @@ class DashboardCustomersSelector:
                 User.objects
                 .filter(
                     is_staff=False,
-                    date_joined__date=today,
+                    created_at__date=today,
                 )
                 .count(),
 
@@ -65,7 +65,7 @@ class DashboardCustomersSelector:
                 User.objects
                 .filter(
                     is_staff=False,
-                    date_joined__date__gte=month_start,
+                   created_at__date__gte=month_start,
                 )
                 .count(),
 
@@ -82,7 +82,7 @@ class DashboardCustomersSelector:
                 is_staff=False
             )
             .order_by(
-                "-date_joined"
+                 "-created_at"
             )[:10]
 
         )
@@ -100,7 +100,7 @@ class DashboardCustomersSelector:
                     or customer.email,
 
                 "joined_at":
-                    customer.date_joined,
+                     customer.created_at,
 
             }
 
@@ -123,11 +123,11 @@ class DashboardCustomersSelector:
             User.objects
             .filter(
                 is_staff=False,
-                date_joined__gte=start_date,
+               created_at__gte=start_date,
             )
             .annotate(
                 date=TruncDate(
-                    "date_joined"
+                   "created_at"
                 )
             )
             .values(

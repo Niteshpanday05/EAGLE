@@ -101,12 +101,11 @@ class DashboardReportsSelector:
                 .count(),
 
 
-            "registered_this_year":
-                User.objects.filter(
-                    date_joined__year=
-                    timezone.now().year
-                )
-                .count(),
+           "registered_this_year":
+    User.objects.filter(
+        is_staff=False,
+        created_at__year=timezone.now().year,
+    ).count(),
 
         }
 
