@@ -58,6 +58,7 @@ urlpatterns = [
         "apps.notifications.urls"
     )
 ),
+    path("api/v1/categories/", include("apps.categories.api.urls")),
 
     
 ]

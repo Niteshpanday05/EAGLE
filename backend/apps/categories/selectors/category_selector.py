@@ -1,7 +1,7 @@
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
 
-from .models import Category
+from apps.categories.models import Category
 
 
 class CategorySelector:

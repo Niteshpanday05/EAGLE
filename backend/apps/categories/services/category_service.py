@@ -1,4 +1,4 @@
-from .selectors import CategorySelector
+from apps.categories.selectors.category_selector import CategorySelector
 
 
 class CategoryService:
