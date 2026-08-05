@@ -10,8 +10,10 @@ class Category(models.Model):
     )
 
     slug = models.SlugField(
+        max_length=140,
         unique=True,
         blank=True,
+        db_index=True,
     )
 
     description = models.TextField(
@@ -26,6 +28,7 @@ class Category(models.Model):
 
     is_active = models.BooleanField(
         default=True,
+        db_index=True,
     )
 
     created_at = models.DateTimeField(
@@ -39,9 +42,10 @@ class Category(models.Model):
     class Meta:
         db_table = "categories"
         ordering = ["name"]
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     def save(self, *args, **kwargs):
-
         if not self.slug:
             self.slug = slugify(self.name)
 
