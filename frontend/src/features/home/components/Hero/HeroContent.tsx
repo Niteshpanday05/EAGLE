@@ -8,7 +8,7 @@ export default function HeroContent() {
         space-y-6
 
         sm:space-y-8
-        lg:space-y-10
+        lg:space-y-13
       "
     >
       {/* Badge */}
@@ -61,13 +61,13 @@ export default function HeroContent() {
       lg:text-6xl
     "
   >
-    <span className="hero-premium-line hero-premium-line-1 block">
+    <span className="hero-premium-line  mb-1 hero-premium-line-1 block  font-semibold leading-[1.05] tracking-[-0.04em] text-neutral-300 sm:text-4xl lg:text-6xl">
       Elevate Your
     </span>
 
-    <span className="hero-premium-line hero-premium-line-2 block text-amber-400">
-      Everyday Lifestyle
-    </span>
+    <span className="font-semibold text-neutral-300">
+              Everyday lifestyle..
+            </span>
   </h1>
 
         <p

@@ -8,6 +8,7 @@ import PromoBanner from "./components/PromoBanner";
 import { useCategories } from "@/features/categories/hooks/useCategories";
 import { useProducts } from "@/features/products/hooks/useProducts";
 import WhyChooseUs from "./components/WhyChooseUs";
+import { AboutWhyChooseUs } from "../about";
 
 export default function HomePage() {
   const {
@@ -33,18 +34,19 @@ export default function HomePage() {
       />
 
       <FeaturedProducts
-        products={productsResponse?.results ?? []}
-        loading={productsLoading}
-        error={
-          productsIsError
-            ? productsError?.message ?? "Failed to load products."
-            : null
-        }
-      />
+  products={productsResponse?.results ?? []}
+  loading={productsLoading}
+  error={
+    productsIsError
+      ? productsError?.message ?? "Failed to load products."
+      : null
+  }
+  limit={8}
+/>
 
       <PromoBanner /> 
       {/* <WhyChooseUs /> */}
-      
+      <AboutWhyChooseUs/>
     </main>
   );
 }

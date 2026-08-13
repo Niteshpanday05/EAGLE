@@ -1,6 +1,7 @@
 import Image from "next/image";
 import HeroContent from "./HeroContent";
 import HeroStats from "./HeroStats";
+import AboutStatCounter from "@/features/about/components/AboutStatCounter";
 
 export default function Hero() {
   return (
@@ -52,7 +53,7 @@ export default function Hero() {
 
           <HeroContent />
 
-          <HeroStats />
+          <HeroStats stats={AboutStatCounter} />
 
         </div>
 

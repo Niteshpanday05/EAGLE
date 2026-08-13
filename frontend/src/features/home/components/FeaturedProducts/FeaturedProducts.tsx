@@ -11,7 +11,12 @@ export default function FeaturedProducts({
   products = [],
   loading = false,
   error = null,
+  limit,
 }: FeaturedProductsProps) {
+  const displayedProducts = limit
+    ? products.slice(0, limit)
+    : products;
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/70 to-white py-20 lg:py-28">
       {/* Decorative Background */}
@@ -49,7 +54,7 @@ export default function FeaturedProducts({
         )}
 
         {/* Empty */}
-        {!loading && !error && products.length === 0 && (
+        {!loading && !error && displayedProducts.length === 0 && (
           <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
             <ProductEmpty
               title="No Products Found"
@@ -59,8 +64,8 @@ export default function FeaturedProducts({
         )}
 
         {/* Products */}
-        {!loading && !error && products.length > 0 && (
-          <ProductGrid products={products} />
+        {!loading && !error && displayedProducts.length > 0 && (
+          <ProductGrid products={displayedProducts} />
         )}
       </div>
     </section>

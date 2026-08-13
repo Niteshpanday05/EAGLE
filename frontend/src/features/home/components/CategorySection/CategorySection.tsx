@@ -18,9 +18,9 @@ export default function CategorySection({
   error,
 }: Props) {
   return (
-   <section className="py-10 lg:py-14">
+   <section className="py-10 lg:py-12">
   <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-4">
-    <div className="mb-12 flex justify-center">
+    <div className="mb-10 flex justify-center">
       <SectionHeader
         title={CATEGORY_SECTION.title}
         subtitle={CATEGORY_SECTION.subtitle}
