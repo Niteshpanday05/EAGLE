@@ -31,42 +31,44 @@ export default function HeroContent() {
       >
         <span className="h-2 w-2 rounded-full bg-emerald-400" />
 
-        <span
-          className="
-            text-[10px]
-            font-medium
-            uppercase
-            tracking-[0.15em]
-            text-white/90
-
-            sm:text-xs
-            lg:text-sm
-          "
-        >
-          New Arrival Collection
-        </span>
+       <span
+  className="
+    new-collection-badge
+    text-[10px]
+    font-medium
+    uppercase
+    tracking-[0.15em]
+    text-white/90
+    sm:text-xs
+    lg:text-sm
+  "
+>
+  New Collection
+</span>
       </div>
 
       {/* Heading */}
       <div className="space-y-3 sm:space-y-5">
         <h1
-          className="
-            text-3xl
-            font-extrabold
-            leading-tight
-            tracking-tight
-            text-white
+    className="
+      text-3xl
+      font-extrabold
+      leading-tight
+      tracking-tight
+      text-white
+      sm:text-4xl
+      md:text-5xl
+      lg:text-6xl
+    "
+  >
+    <span className="hero-premium-line hero-premium-line-1 block">
+      Elevate Your
+    </span>
 
-            sm:text-4xl
-            md:text-5xl
-            lg:text-6xl
-          "
-        >
-          Elevate Your{" "}
-          <span className="block text-amber-400">
-            Everyday Lifestyle
-          </span>
-        </h1>
+    <span className="hero-premium-line hero-premium-line-2 block text-amber-400">
+      Everyday Lifestyle
+    </span>
+  </h1>
 
         <p
           className="
