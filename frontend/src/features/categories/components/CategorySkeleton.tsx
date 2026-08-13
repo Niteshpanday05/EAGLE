@@ -18,7 +18,7 @@ export default function CategorySkeleton() {
             <div
               key={index}
               className="
-                h-64
+                h-50
                 rounded-xl
                 animate-pulse
                 bg-gray-200

@@ -19,10 +19,9 @@ export function useCategories() {
 
         console.log("Category API response:", response);
 
-        setCategories(response.results);
+        setCategories(response?.results ?? []);
       } catch (error) {
         console.error("Category API error:", error);
-
         setError("Failed to load categories.");
       } finally {
         setLoading(false);

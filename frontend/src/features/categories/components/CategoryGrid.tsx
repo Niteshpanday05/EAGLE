@@ -12,6 +12,7 @@ export default function CategoryGrid({
   return (
     <div
       className="
+      mt-12
         grid
         gap-6
         grid-cols-2
