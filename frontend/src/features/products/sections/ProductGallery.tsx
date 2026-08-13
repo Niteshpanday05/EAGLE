@@ -1,97 +1,81 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
 
-import { Product } from "../types/product.types";
-import { formatPrice } from "../utils/product.utils";
-import AddToCartButton from "../components/AddToCartButton";
-interface ProductCardProps {
-  product: Product;
+interface ProductGalleryProps {
+  thumbnail: string;
+  name: string;
+  images?: string[];
 }
 
-export default function ProductCard({
-  product,
-}: ProductCardProps) {
+export default function ProductGallery({
+  thumbnail,
+  name,
+  images = [],
+}: ProductGalleryProps) {
+  const allImages = [
+    thumbnail,
+    ...images.filter((image) => image !== thumbnail),
+  ].filter(Boolean);
+
+  const [selectedImage, setSelectedImage] = useState(
+    allImages[0] || thumbnail
+  );
+
+  if (!selectedImage) {
+    return (
+      <div className="flex aspect-square items-center justify-center rounded-2xl bg-gray-100">
+        No image available
+      </div>
+    );
+  }
+
+  const getImageUrl = (image: string) => {
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}${image}`;
+  };
+
   return (
-    <div className="group overflow-hidden rounded-xl border bg-white transition hover:shadow-lg">
-
-      <Link href={`/products/${product.slug}`}>
-
-        <div className="relative aspect-square overflow-hidden bg-gray-100">
-
-          <Image
-            src={product.thumbnail}
-            alt={product.name}
-            fill
-            className="object-cover transition duration-300 group-hover:scale-105"
-          />
-
-          {product.discount_percentage > 0 && (
-            <span className="absolute left-3 top-3 rounded bg-red-500 px-2 py-1 text-xs font-semibold text-white">
-              -{product.discount_percentage}%
-            </span>
-          )}
-
-          {!product.is_in_stock && (
-            <span className="absolute right-3 top-3 rounded bg-black px-2 py-1 text-xs text-white">
-              Out of Stock
-            </span>
-          )}
-
-        </div>
-
-      </Link>
-
-      <div className="space-y-3 p-4">
-
-        <div>
-
-          <p className="text-xs uppercase text-gray-500">
-            {product.brand}
-          </p>
-
-          <Link href={`/products/${product.slug}`}>
-            <h3 className="mt-1 line-clamp-2 font-semibold hover:text-blue-600">
-              {product.name}
-            </h3>
-          </Link>
-
-        </div>
-
-        <div className="flex items-center gap-2">
-
-          <span className="text-xl font-bold text-blue-600">
-            {formatPrice(product.final_price)}
-          </span>
-
-          {product.discount_price && (
-            <span className="text-sm text-gray-400 line-through">
-              {formatPrice(product.price)}
-            </span>
-          )}
-
-        </div>
-
-        <div className="flex items-center justify-between text-sm">
-
-          <span>
-            ⭐ {product.rating}
-          </span>
-
-          <span className="text-gray-500">
-            {product.total_reviews} Reviews
-          </span>
-
-        </div>
-
-        <AddToCartButton
-          productId={product.id}
-          disabled={!product.is_in_stock}
-        />
-
+    <div className="space-y-4">
+      {/* Main Image */}
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
+      <Image
+  src={getImageUrl(selectedImage)}
+  alt={name}
+  fill
+  priority
+  className="object-cover"
+/>
       </div>
 
+      {/* Thumbnails */}
+      {allImages.length > 1 && (
+        <div className="grid grid-cols-5 gap-3">
+          {allImages.map((image, index) => (
+            <button
+              key={`${image}-${index}`}
+              type="button"
+              onClick={() => setSelectedImage(image)}
+              className={`relative aspect-square overflow-hidden rounded-lg border-2 ${
+                selectedImage === image
+                  ? "border-blue-600"
+                  : "border-gray-200"
+              }`}
+            >
+              <Image
+                src={getImageUrl(image)}
+                alt={`${name} ${index + 1}`}
+                fill
+                className="object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

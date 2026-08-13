@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { useEffect, useState } from "react";
 
 import { categoryService } from "../services";
@@ -12,9 +13,16 @@ export function useCategories() {
   useEffect(() => {
     async function loadCategories() {
       try {
+        console.log("Fetching categories...");
+
         const response = await categoryService.getCategories();
+
+        console.log("Category API response:", response);
+
         setCategories(response.results);
-      } catch {
+      } catch (error) {
+        console.error("Category API error:", error);
+
         setError("Failed to load categories.");
       } finally {
         setLoading(false);
@@ -26,7 +34,6 @@ export function useCategories() {
 
   return {
     categories,
-
     loading,
     error,
   };

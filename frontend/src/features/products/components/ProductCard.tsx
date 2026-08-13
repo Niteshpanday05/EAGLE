@@ -20,12 +20,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/products/${product.slug}`}>
         <div className="relative aspect-square overflow-hidden bg-gray-100">
           <img
-            src={imageUrl}
-            alt={product.name}
-            width={500}
-            height={500}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
+  src={imageUrl}
+  alt={product.name}
+  width={500}
+  height={500}
+  loading="lazy"
+  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+/>
 
           {product.discount_percentage > 0 && (
             <span className="absolute left-4 top-4 rounded-full bg-red-500 px-2 py-1 text-xs font-semibold text-white shadow-md">

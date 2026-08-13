@@ -2,7 +2,7 @@
 
 import { Filter, RotateCcw } from "lucide-react";
 
-import { useCategories } from "../hooks/useProducts";
+import { useCategories } from "@/features/categories/hooks/useCategories";
 import { useProductFilters } from "../hooks/useProductFilters";
 
 export default function ProductFilters() {
