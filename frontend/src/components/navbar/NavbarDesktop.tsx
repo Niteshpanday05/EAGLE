@@ -83,7 +83,7 @@ export default function NavbarDesktop({
             transition
             ${
               isHomeActive
-                ? "bg-slate-950 text-white"
+                ? "text-black font-bold"
                 : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
             }
           `}
@@ -106,7 +106,7 @@ export default function NavbarDesktop({
             transition
             ${
               isShopActive
-                ? "bg-slate-950 text-white"
+                ? " text-black font-"
                 : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
             }
           `}
@@ -138,7 +138,7 @@ export default function NavbarDesktop({
             transition
             ${
               isDealsActive
-                ? "bg-rose-600 text-white"
+                ? " text-rose-500 "
                 : "text-rose-600 hover:bg-rose-50"
             }
           `}
@@ -156,7 +156,7 @@ export default function NavbarDesktop({
             transition
             ${
               isAboutActive
-                ? "bg-slate-950 text-white"
+                ? "text-black font-black"
                 : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
             }
           `}

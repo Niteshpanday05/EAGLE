@@ -78,7 +78,7 @@ export default function HeroButtons() {
           lg:py-3
         "
       >
-        Explore Categories
+        Collections
       </Link>
     </div>
   );

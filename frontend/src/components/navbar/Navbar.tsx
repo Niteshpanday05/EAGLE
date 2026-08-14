@@ -31,13 +31,13 @@ export default function Navbar({
         className="
           mx-auto
           flex
-          h-[72px]
+          h-[56px]
           w-full
           max-w-full
           items-center
           px-4
-          lg:h-20
-          lg:px-8
+          lg:h-16
+          lg:px-7
         "
       >
         {/* =====================================================
