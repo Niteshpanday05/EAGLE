@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { Heart } from "lucide-react";
 
 import { Product } from "../types/product.types";
 import { formatPrice } from "../utils/product.utils";
 import AddToCartButton from "./AddToCartButton";
-import Image from "next/image";
 
 interface ProductCardProps {
   product: Product;
@@ -15,72 +16,205 @@ export default function ProductCard({ product }: ProductCardProps) {
   const imageUrl = product.thumbnail.startsWith("http")
     ? product.thumbnail
     : `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.thumbnail}`;
+
   return (
-    <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-2xl">
-      <Link href={`/products/${product.slug}`}>
-        <div className="relative aspect-square overflow-hidden bg-gray-100">
+    <article
+      className="
+        group
+        flex
+        h-full
+        flex-col
+        overflow-hidden
+        rounded-2xl
+        border
+        border-slate-200
+        bg-white
+        transition-all
+        duration-300
+        ease-out
+        hover:-translate-y-1
+        hover:border-slate-300
+        hover:shadow-lg
+      "
+    >
+      {/* ================= IMAGE ================= */}
+      <div className="relative aspect-square w-full shrink-0 overflow-hidden bg-slate-50">
+        <Link
+          href={`/products/${product.slug}`}
+          className="block h-full w-full"
+        >
           <img
-  src={imageUrl}
-  alt={product.name}
-  width={500}
-  height={500}
-  loading="lazy"
-  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-/>
+            src={imageUrl}
+            alt={product.name}
+            fill
+            sizes="
+              (max-width: 640px) 50vw,
+              (max-width: 768px) 33vw,
+              (max-width: 1024px) 25vw,
+              25vw
+            "
+            className="
+              object-contain
+              transition-transform
+              duration-500
+              ease-[cubic-bezier(0.22,1,0.36,1)]
+              group-hover:scale-[1.04]
+            "
+          />
+        </Link>
 
-          {product.discount_percentage > 0 && (
-            <span className="absolute left-4 top-4 rounded-full bg-red-500 px-2 py-1 text-xs font-semibold text-white shadow-md">
-              -{product.discount_percentage}%
-            </span>
-          )}
+        {/* Discount */}
+        {product.discount_percentage > 0 && (
+          <span
+            className="
+              absolute
+              left-3
+              top-3
+              rounded-full
+              bg-red-500
+              px-2.5
+              py-1
+              text-[10px]
+              font-semibold
+              leading-none
+              text-white
+            "
+          >
+            -{product.discount_percentage}%
+          </span>
+        )}
 
-          {!product.is_in_stock && (
-            <span className="absolute right-4 top-4 rounded-full bg-black/80 px-2 py-1 text-xs font-medium text-white backdrop-blur">
-              Out of Stock
-            </span>
-          )}
-        </div>
-      </Link>
+        {/* Wishlist */}
+        <button
+          type="button"
+          aria-label="Add to wishlist"
+          className="
+            absolute
+            right-3
+            top-3
+            z-10
+            flex
+            h-9
+            w-9
+            items-center
+            justify-center
+            rounded-full
+            bg-white/95
+            text-slate-600
+            shadow-sm
+            backdrop-blur-sm
+            transition-all
+            duration-300
+            hover:scale-105
+            hover:text-red-500
+            hover:shadow-md
+          "
+        >
+          <Heart
+            size={18}
+            strokeWidth={1.8}
+          />
+        </button>
 
-      <div className="space-y-1 p-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+        {/* Out of Stock */}
+        {!product.is_in_stock && (
+          <span
+            className="
+              absolute
+              bottom-3
+              left-3
+              rounded-full
+              bg-slate-900/85
+              px-2.5
+              py-1
+              text-[10px]
+              font-medium
+              leading-none
+              text-white
+              backdrop-blur-sm
+            "
+          >
+            Out of Stock
+          </span>
+        )}
+      </div>
+
+      {/* ================= CONTENT ================= */}
+      <div className="flex flex-1 flex-col px-3.5 py-3">
+        {/* Brand */}
+        {product.brand && (
+          <p
+            className="
+              text-[9px]
+              font-semibold
+              uppercase
+              tracking-[0.14em]
+              text-slate-400
+            "
+          >
             {product.brand}
           </p>
+        )}
 
-          <Link href={`/products/${product.slug}`}>
-            <h3 className="mt-2 line-clamp-2 text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
-              {product.name}
-            </h3>
-          </Link>
-        </div>
+        {/* Product Name */}
+        <Link href={`/products/${product.slug}`}>
+          <h3
+            className="
+              mt-1
+              line-clamp-2
+              min-h-[36px]
+              text-[14px]
+              font-semibold
+              leading-[18px]
+              tracking-tight
+              text-slate-900
+              transition-colors
+              duration-200
+              group-hover:text-blue-600
+            "
+          >
+            {product.name}
+          </h3>
+        </Link>
 
-        <div className="flex items-end gap-3">
-          <span className="text-2xl font-bold text-gray-900">
+        {/* Price */}
+        <div className="mt-1.5 flex items-center gap-2">
+          <span className="text-base font-bold leading-none text-slate-900">
             {formatPrice(product.final_price)}
           </span>
 
           {product.discount_price && (
-            <span className="pb-1 text-sm text-gray-400 line-through">
+            <span className="text-[11px] leading-none text-slate-400 line-through">
               {formatPrice(product.price)}
             </span>
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-gray-100 pt-3 text-sm">
-          <div className="flex items-center gap-1 rounded-full bg-yellow-50 px-2 py-1">
-            <span>⭐</span>
-            <span className="font-medium">{product.rating}</span>
+        {/* Rating */}
+        <div className="mt-2 flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <span className="text-[11px] text-amber-500">
+              ★
+            </span>
+
+            <span className="text-[11px] font-medium text-slate-700">
+              {product.rating}
+            </span>
           </div>
 
-          <span className="text-gray-500">{product.total_reviews} Reviews</span>
+          <span className="text-[10px] text-slate-400">
+            {product.total_reviews} Reviews
+          </span>
         </div>
 
-        <AddToCartButton
-          productId={product.id}
-          disabled={!product.is_in_stock}
-        />
+        {/* Add To Cart */}
+        <div className="mt-2.5">
+          <AddToCartButton
+            productId={product.id}
+            disabled={!product.is_in_stock}
+          />
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
