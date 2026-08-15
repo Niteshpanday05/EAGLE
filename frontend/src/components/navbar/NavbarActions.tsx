@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Heart,
   ShoppingBag,
   UserRound,
 } from "lucide-react";
+
+import LogoutButton from "@/features/auth/components/LogoutButton";
 
 import type { NavbarUser } from "./navbar.types";
 
@@ -22,8 +25,11 @@ export default function NavbarActions({
   cartCount = 0,
   wishlistCount = 0,
 }: NavbarActionsProps) {
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
+
   return (
-    <div className="flex shrink-0 items-center">
+    <div className="flex shrink-0 items-center gap-1">
+
       {/* =====================================================
           WISHLIST
           ===================================================== */}
@@ -70,12 +76,12 @@ export default function NavbarActions({
               top-0
               flex
               h-4
-              w-4
+              min-w-4
               items-center
               justify-center
               rounded-full
               bg-rose-500
-              
+              px-0.5
               text-[9px]
               font-bold
               leading-none
@@ -84,160 +90,315 @@ export default function NavbarActions({
               ring-white
             "
           >
-            {wishlistCount > 99
-              ? "99+"
-              : wishlistCount}
+            {wishlistCount > 99 ? "99+" : wishlistCount}
           </span>
         )}
       </Link>
 
       {/* =====================================================
-    CART
-    ===================================================== */}
+          CART
+          ===================================================== */}
 
-<Link
-  href="/cart"
-  aria-label={
-    cartCount > 0
-      ? `Cart, ${cartCount} items`
-      : "Cart"
-  }
-  className="
-    group
-    relative
-    flex
-    shrink-0
-    items-center
-    justify-center
-    p-2
-    text-slate-700
-    transition
-    duration-200
-    hover:text-slate-950
-  "
->
-  <ShoppingBag
-    className="
-      h-6
-      w-5
-      transition-transform
-      duration-200
-      group-hover:scale-105
-    "
-  />
-
-  {cartCount > 0 && (
-    <span
-      className="
-        absolute
-        -right-1
-        -top-1
-        flex
-        h-4
-        min-w-4
-        items-center
-        justify-center
-        rounded-full
-        bg-slate-950
-        px-1
-        text-[9px]
-        font-bold
-        leading-none
-        text-white
-      "
-    >
-      {cartCount > 99 ? "99+" : cartCount}
-    </span>
-  )}
-</Link>
-{/* =====================================================
-    ACCOUNT
-    ===================================================== */}
-
-{isAuthenticated ? (
-  <Link
-    href="/account"
-    aria-label="My account"
-    className="
-      group
-      flex
-      h-8
-      w-8
-      shrink-0
-      items-center
-      justify-center
-      rounded-full
-      bg-slate-950
-      text-white
-      shadow-sm
-      transition
-      duration-200
-      hover:bg-slate-800
-      hover:shadow-md
-    "
-  >
-    {user?.avatar ? (
-      <img
-        src={user.avatar}
-        alt=""
+      <Link
+        href="/cart"
+        aria-label={
+          cartCount > 0
+            ? `Cart, ${cartCount} items`
+            : "Cart"
+        }
         className="
-          h-7
-          w-7
-          rounded-full
-          object-cover
-          ring-2
-          ring-white
+          group
+          relative
+          flex
+          h-10
+          w-10
+          shrink-0
+          items-center
+          justify-center
+          text-slate-700
           transition
           duration-200
-          group-hover:scale-105
+          hover:text-slate-950
         "
-      />
-    ) : (
-      <UserRound
-        className="
-          h-[16px]
-          w-[16px]
-          transition-transform
-          duration-200
-          group-hover:scale-105
-        "
-      />
-    )}
-  </Link>
-) : (
-  <Link
-    href="/login"
-    aria-label="Login"
-    className="
-      group
-      flex
-      h-6
-      w-6
-      shrink-0
-      items-center
-      justify-center
-      rounded-full
-      bg-slate-950
-      text-white
-      shadow-sm
-      transition
-      duration-200
-      hover:bg-slate-800
-      hover:shadow-md
-    "
-  >
-    <UserRound
-      className="
-        h-[16px]
-        w-[16px]
-        transition-transform
-        duration-200
-        group-hover:scale-105
-      "
-    />
-  </Link>
-)}
-      
+      >
+        <ShoppingBag
+          className="
+            h-6
+            w-5
+            transition-transform
+            duration-200
+            group-hover:scale-105
+          "
+        />
+
+        {cartCount > 0 && (
+          <span
+            className="
+              absolute
+              right-0
+              top-0
+              flex
+              h-4
+              min-w-4
+              items-center
+              justify-center
+              rounded-full
+              bg-slate-950
+              px-1
+              text-[9px]
+              font-bold
+              leading-none
+              text-white
+              ring-2
+              ring-white
+            "
+          >
+            {cartCount > 99 ? "99+" : cartCount}
+          </span>
+        )}
+      </Link>
+
+      {/* =====================================================
+          ACCOUNT
+          ===================================================== */}
+
+      {isAuthenticated ? (
+        <div className="relative ml-1">
+
+          {/* =================================================
+              PROFILE BUTTON
+              ================================================= */}
+
+          <button
+            type="button"
+            onClick={() => {
+              setIsAccountOpen((previous) => !previous);
+            }}
+            aria-label="Open account menu"
+            aria-expanded={isAccountOpen}
+            className="
+              group
+              flex
+              h-9
+              w-9
+              shrink-0
+              items-center
+              justify-center
+              rounded-full
+              bg-slate-950
+              text-white
+              shadow-sm
+              transition
+              duration-200
+              hover:bg-slate-800
+              hover:shadow-md
+              focus:outline-none
+              focus:ring-2
+              focus:ring-slate-300
+              focus:ring-offset-2
+            "
+          >
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt="User avatar"
+                className="
+                  h-8
+                  w-8
+                  rounded-full
+                  object-cover
+                  ring-2
+                  ring-white
+                "
+              />
+            ) : (
+              <UserRound
+                className="
+                  h-[17px]
+                  w-[17px]
+                "
+              />
+            )}
+          </button>
+
+          {/* =================================================
+              ACCOUNT DROPDOWN
+              ================================================= */}
+
+          {isAccountOpen && (
+            <div
+              className="
+                absolute
+                right-0
+                top-11
+                z-[9999]
+                w-60
+                rounded-2xl
+                border
+                border-slate-200
+                bg-white
+                p-2
+                shadow-2xl
+                shadow-slate-900/10
+              "
+            >
+
+              {/* =============================================
+                  USER INFORMATION
+                  ============================================= */}
+
+              <div
+                className="
+                  border-b
+                  border-slate-100
+                  px-3
+                  py-3
+                "
+              >
+                <p className="truncate text-sm font-semibold text-slate-900">
+                  {user?.first_name || "My Account"}
+                </p>
+
+                {user?.email && (
+                  <p className="mt-1 truncate text-xs text-slate-500">
+                    {user.email}
+                  </p>
+                )}
+              </div>
+
+              {/* =============================================
+                  MY ACCOUNT
+                  ============================================= */}
+
+              <Link
+                href="/account"
+                onClick={() => setIsAccountOpen(false)}
+                className="
+                  mt-1
+                  flex
+                  w-full
+                  items-center
+                  rounded-xl
+                  px-3
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-100
+                  hover:text-slate-950
+                "
+              >
+                My Account
+              </Link>
+
+              {/* =============================================
+                  ORDERS
+                  ============================================= */}
+
+              <Link
+                href="/orders"
+                onClick={() => setIsAccountOpen(false)}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  rounded-xl
+                  px-3
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-100
+                  hover:text-slate-950
+                "
+              >
+                Orders
+              </Link>
+
+              {/* =============================================
+                  WISHLIST
+                  ============================================= */}
+
+              <Link
+                href="/wishlist"
+                onClick={() => setIsAccountOpen(false)}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  rounded-xl
+                  px-3
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-100
+                  hover:text-slate-950
+                "
+              >
+                Wishlist
+              </Link>
+
+              {/* =============================================
+                  DIVIDER
+                  ============================================= */}
+
+              <div className="my-2 border-t border-slate-100" />
+
+              {/* =============================================
+                  LOGOUT
+                  ============================================= */}
+
+              <LogoutButton />
+
+            </div>
+          )}
+        </div>
+      ) : (
+
+        /* ===================================================
+           LOGIN
+           =================================================== */
+
+        <Link
+          href="/login"
+          aria-label="Login"
+          className="
+            group
+            flex
+            h-8
+            w-8
+            shrink-0
+            items-center
+            justify-center
+            rounded-full
+            bg-slate-950
+            text-white
+            shadow-sm
+            transition
+            duration-200
+            hover:bg-slate-800
+            hover:shadow-md
+            focus:outline-none
+            focus:ring-2
+            focus:ring-slate-300
+            focus:ring-offset-2
+          "
+        >
+          <UserRound
+            className="
+              h-[16px]
+              w-[16px]
+              transition-transform
+              duration-200
+              group-hover:scale-105
+            "
+          />
+        </Link>
+      )}
 
     </div>
   );

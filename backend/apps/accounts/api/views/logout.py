@@ -7,12 +7,11 @@ from apps.accounts.api.serializers.logout import LogoutSerializer
 from apps.accounts.services.auth.logout_service import LogoutService
 
 
-class LogoutView(GenericAPIView):
+class LogoutAPIView(GenericAPIView):
     serializer_class = LogoutSerializer
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

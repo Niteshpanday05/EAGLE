@@ -5,6 +5,7 @@ import axios, {
 
 import { authStorage } from "@/features/auth/utils/auth.storage";
 import { refreshAccessToken } from "@/features/auth/api/auth-refresh";
+
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
@@ -48,17 +49,21 @@ const clearRefreshSubscribers = () => {
 
 apiClient.interceptors.request.use(
   (config) => {
-    if (typeof window !== "undefined") {
-      const accessToken = authStorage.getAccessToken();
+    if (typeof window === "undefined") {
+      return config;
+    }
 
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
+    const accessToken = authStorage.getAccessToken();
+
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 /*
@@ -79,23 +84,51 @@ apiClient.interceptors.response.use(
     }
 
     /*
-     * Only handle 401 responses.
-     */
+    |--------------------------------------------------------------------------
+    | Only handle 401
+    |--------------------------------------------------------------------------
+    */
+
     if (error.response?.status !== 401) {
       return Promise.reject(error);
     }
 
     /*
-     * Prevent infinite retry loops.
-     */
+    |--------------------------------------------------------------------------
+    | Prevent infinite retry
+    |--------------------------------------------------------------------------
+    */
+
     if (originalRequest._retry) {
       return Promise.reject(error);
     }
 
     /*
-     * We need a refresh token.
-     */
-    const refreshToken = authStorage.getRefreshToken();
+    |--------------------------------------------------------------------------
+    | Don't refresh the refresh endpoint itself
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+      originalRequest.url?.includes(
+        "/auth/token/refresh/"
+      )
+    ) {
+      authStorage.clearTokens();
+
+      clearRefreshSubscribers();
+
+      return Promise.reject(error);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get refresh token
+    |--------------------------------------------------------------------------
+    */
+
+    const refreshToken =
+      authStorage.getRefreshToken();
 
     if (!refreshToken) {
       authStorage.clearTokens();
@@ -106,9 +139,11 @@ apiClient.interceptors.response.use(
     originalRequest._retry = true;
 
     /*
-     * Another request is already refreshing.
-     * Wait for it.
-     */
+    |--------------------------------------------------------------------------
+    | Another request is already refreshing
+    |--------------------------------------------------------------------------
+    */
+
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         subscribeToRefresh((newAccessToken) => {
@@ -123,38 +158,50 @@ apiClient.interceptors.response.use(
     }
 
     /*
-     * Start token refresh.
-     */
+    |--------------------------------------------------------------------------
+    | Refresh access token
+    |--------------------------------------------------------------------------
+    */
+
     isRefreshing = true;
 
     try {
-      const newAccessToken = await authApi.refreshToken();
+      const newAccessToken =
+        await refreshAccessToken();
 
       isRefreshing = false;
 
       /*
-       * Notify requests waiting for the refresh.
-       */
-      notifyRefreshSubscribers(newAccessToken);
+      |--------------------------------------------------------------------------
+      | Notify waiting requests
+      |--------------------------------------------------------------------------
+      */
+
+      notifyRefreshSubscribers(
+        newAccessToken
+      );
 
       /*
-       * Retry original request.
-       */
+      |--------------------------------------------------------------------------
+      | Retry original request
+      |--------------------------------------------------------------------------
+      */
+
       originalRequest.headers.Authorization =
         `Bearer ${newAccessToken}`;
 
       return apiClient(originalRequest);
+
     } catch (refreshError) {
       isRefreshing = false;
 
       clearRefreshSubscribers();
 
-      /*
-       * Refresh token is no longer valid.
-       */
       authStorage.clearTokens();
 
-      return Promise.reject(refreshError);
+      return Promise.reject(
+        refreshError
+      );
     }
   }
 );
