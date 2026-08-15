@@ -8,10 +8,14 @@ import {
   RefreshTokenRequest,
   RefreshTokenResponse,
 } from "../types/auth.types";
+
 import { authStorage } from "../utils/auth.storage";
 
 const refreshClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 class AuthApi {

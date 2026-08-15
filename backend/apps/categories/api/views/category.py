@@ -9,12 +9,8 @@ from apps.categories.services import CategoryService
 
 
 class CategoryListAPIView(generics.ListAPIView):
-
     serializer_class = CategoryListSerializer
-
-    permission_classes = [
-        AllowAny,
-    ]
+    permission_classes = [AllowAny]
 
     search_fields = (
         "name",
@@ -26,15 +22,10 @@ class CategoryListAPIView(generics.ListAPIView):
         "created_at",
     )
 
-    ordering = (
-        "name",
-    )
+    ordering = ("name",)
 
     def get_queryset(self):
-
-        search = self.request.query_params.get(
-            "search",
-        )
+        search = self.request.query_params.get("search")
 
         return CategoryService.list_categories(
             search=search,
@@ -42,15 +33,9 @@ class CategoryListAPIView(generics.ListAPIView):
 
 
 class CategoryDetailAPIView(generics.RetrieveAPIView):
-
     serializer_class = CategoryDetailSerializer
-
-    permission_classes = [
-        AllowAny,
-    ]
-
+    permission_classes = [AllowAny]
     lookup_field = "slug"
 
     def get_queryset(self):
-
         return CategoryService.list_categories()
