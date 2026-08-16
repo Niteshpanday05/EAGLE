@@ -35,7 +35,7 @@ export default function HomePage() {
         limit={8}
       />
       <BrandSection/>
-      <PromoBanner />
+      {/* <PromoBanner /> */}
       {/* <WhyChooseUs /> */}
       <AboutWhyChooseUs />
     </main>

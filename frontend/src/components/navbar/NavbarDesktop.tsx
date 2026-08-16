@@ -59,13 +59,13 @@ export default function NavbarDesktop({
     aria-label="Main navigation"
     className="
       absolute
-      left-1/2
+      left-[45%]
       top-1/2
       flex
       -translate-x-1/2
       -translate-y-1/2
       items-center
-      gap-1
+      gap-2
     "
   >
         {/* =================================================
