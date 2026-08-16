@@ -18,7 +18,7 @@ export default function NavbarLogo() {
         className="
           flex
           h-10
-          w-20
+          w-16
           items-center
           justify-center
           rounded-xl
@@ -34,6 +34,9 @@ export default function NavbarLogo() {
           group-hover:shadow-md
         "
       >
+        
+
+        
         <span
           className="
             text-lg
@@ -41,7 +44,7 @@ export default function NavbarLogo() {
             tracking-tight
           "
         >
-          SAJILO
+           𝓢Ø
         </span>
       </div>
 
@@ -49,44 +52,36 @@ export default function NavbarLogo() {
 
       <div
         className="
-          hidden
+          
           sm:block
           transition-all
           duration-300
           ease-out
         "
       >
-        <div
-          className="
-            text-lg
-            font-black
-            leading-none
-            tracking-tight
-            text-slate-950
-            transition-colors
-            duration-300
-            group-hover:text-slate-700
-          "
-        >
-          1996
-        </div>
-
-        <div
-          className="
-            mt-1
-            ml-1
-            text-[8px]
-            font-bold
-            uppercase
-            tracking-[0.28em]
-            text-slate-400
-            transition-colors
-            duration-300
-            group-hover:text-slate-500
-          "
-        >
-          Store
-        </div>
+         
+                    <div
+                      className="
+                        text-base
+                        font-black
+                        leading-none
+                        text-slate-950
+                      "
+                    >
+                      SAJILO
+                    </div>
+         <div
+                      className="
+                        mt-1
+                        text-[7px]
+                        font-bold
+                        uppercase
+                        tracking-[0.25em]
+                        text-slate-400
+                      "
+                    >
+                      Order1996
+                    </div>
       </div>
     </Link>
   );
