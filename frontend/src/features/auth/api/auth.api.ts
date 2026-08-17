@@ -3,6 +3,7 @@ import apiClient from "@/lib/axios";
 import {
   AuthResponse,
   LoginRequest,
+  User,
 } from "../types/auth.types";
 
 import { authStorage } from "../utils/auth.storage";
@@ -22,19 +23,27 @@ class AuthApi {
     return response.data;
   }
 
- async logout(): Promise<void> {
-  const refresh = authStorage.getRefreshToken();
+  async getCurrentUser(): Promise<User> {
+    const response = await apiClient.get<User>(
+      "/auth/me/"
+    );
 
-  try {
-    if (refresh) {
-      await apiClient.post("/auth/logout/", {
-        refresh,
-      });
-    }
-  } finally {
-    authStorage.clearTokens();
+    return response.data;
   }
-}
+
+  async logout(): Promise<void> {
+    const refresh = authStorage.getRefreshToken();
+
+    try {
+      if (refresh) {
+        await apiClient.post("/auth/logout/", {
+          refresh,
+        });
+      }
+    } finally {
+      authStorage.clearTokens();
+    }
+  }
 }
 
 export const authApi = new AuthApi();

@@ -10,15 +10,15 @@ export interface RegisterRequest {
   password: string;
   confirm_password: string;
 }
-
 export interface User {
-  id: string;
+  id: string | number;
   email: string;
   first_name: string;
   last_name: string;
-  phone?: string | null;
-  avatar?: string | null;
-  is_verified?: boolean;
+  full_name: string;
+  phone: string;
+  avatar: string | null;
+  is_verified: boolean;
 }
 
 export interface Tokens {
