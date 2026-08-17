@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 User = get_user_model()
@@ -6,9 +7,15 @@ User = get_user_model()
 
 class RegisterSerializer(serializers.Serializer):
 
-    first_name = serializers.CharField(max_length=100)
+    first_name = serializers.CharField(
+        max_length=100,
+        trim_whitespace=True,
+    )
 
-    last_name = serializers.CharField(max_length=100)
+    last_name = serializers.CharField(
+        max_length=100,
+        trim_whitespace=True,
+    )
 
     email = serializers.EmailField()
 
@@ -23,10 +30,20 @@ class RegisterSerializer(serializers.Serializer):
 
     def validate_email(self, value):
 
-        if User.objects.filter(email=value).exists():
+        email = value.strip().lower()
+
+        if User.objects.filter(
+            email__iexact=email
+        ).exists():
             raise serializers.ValidationError(
                 "Email already exists."
             )
+
+        return email
+
+    def validate_password(self, value):
+
+        validate_password(value)
 
         return value
 
@@ -39,5 +56,7 @@ class RegisterSerializer(serializers.Serializer):
                     "Passwords do not match."
                 }
             )
+
+        attrs.pop("confirm_password")
 
         return attrs

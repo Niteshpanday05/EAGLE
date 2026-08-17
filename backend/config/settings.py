@@ -150,6 +150,8 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = "accounts.User"
 
+# Frontend
+FRONTEND_URL = "http://localhost:3000"
 
 # rest framework setup
 REST_FRAMEWORK = {
@@ -277,3 +279,11 @@ from decimal import Decimal
 
 DEFAULT_SHIPPING_COST = Decimal("100.00")
 DEFAULT_TAX_RATE = Decimal("0.13")
+
+# email setting change later
+
+EMAIL_BACKEND = (
+    "django.core.mail.backends.console.EmailBackend"
+)
+
+DEFAULT_FROM_EMAIL = "noreply@example.com"

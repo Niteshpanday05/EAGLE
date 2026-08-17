@@ -1,11 +1,10 @@
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 
-from apps.accounts.selectors.user_selector import UserSelector
-from apps.accounts.services.auth.token_service import TokenService
 from apps.accounts.api.serializers.user import UserSerializer
+from apps.accounts.services.auth.register_service import RegisterService
+from apps.accounts.services.auth.token_service import TokenService
 
-from apps.accounts.models import User
 
 class AuthService:
 
@@ -30,29 +29,17 @@ class AuthService:
         tokens = TokenService.generate_tokens(user)
 
         return {
-        "user": UserSerializer(user).data,
-        "tokens": tokens,
-    }
-            
+            "user": UserSerializer(user).data,
+            "tokens": tokens,
+        }
+
     @staticmethod
     def register(data):
 
-        user = User.objects.create_user(
-
-            email=data["email"],
-
-            password=data["password"],
-
-            first_name=data["first_name"],
-
-            last_name=data["last_name"],
+        user = RegisterService.register(
+            **data
         )
 
-        # EmailService.send_verification(user)
-
-        tokens = TokenService.generate_tokens(user)
-
         return {
-        "user": UserSerializer(user).data,
-        "tokens": tokens,
-    }
+            "user": UserSerializer(user).data,
+        }

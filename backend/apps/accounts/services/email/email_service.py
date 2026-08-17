@@ -10,7 +10,6 @@ class EmailService:
         message: str,
         recipient: str,
     ):
-
         send_mail(
             subject=subject,
             message=message,
