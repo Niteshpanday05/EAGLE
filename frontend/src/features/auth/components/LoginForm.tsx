@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Mail, LockKeyhole, Eye, EyeOff } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Mail,
+  LockKeyhole,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 
 import { useLogin } from "../hooks/useLogin";
 
@@ -12,7 +17,48 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /*
+   * Load email and password after coming from
+   * the registration page.
+   */
+  useEffect(() => {
+    const registeredLogin = sessionStorage.getItem(
+      "registered_login"
+    );
+
+    if (!registeredLogin) {
+      return;
+    }
+
+    try {
+      const data = JSON.parse(registeredLogin);
+
+      if (data.email) {
+        setEmail(data.email);
+      }
+
+      if (data.password) {
+        setPassword(data.password);
+      }
+
+      /*
+       * Remove the temporary credentials after
+       * loading them into the form.
+       */
+      sessionStorage.removeItem("registered_login");
+    } catch (error) {
+      console.error(
+        "Failed to load registered login details:",
+        error
+      );
+
+      sessionStorage.removeItem("registered_login");
+    }
+  }, []);
+
+  const handleSubmit = (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
     login.mutate({
@@ -68,7 +114,10 @@ export default function LoginForm() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
             {/* Email */}
             <div>
               <label
@@ -95,9 +144,13 @@ export default function LoginForm() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
+                  autoComplete="email"
                   placeholder="Enter your email"
                   className="
                     h-11
@@ -162,11 +215,19 @@ export default function LoginForm() {
                 />
 
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
                   id="password"
+                  name="password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
+                  autoComplete="current-password"
                   placeholder="Enter your password"
                   className="
                     h-11
@@ -193,7 +254,9 @@ export default function LoginForm() {
                 <button
                   type="button"
                   onClick={() =>
-                    setShowPassword((current) => !current)
+                    setShowPassword(
+                      (current) => !current
+                    )
                   }
                   aria-label={
                     showPassword
@@ -254,7 +317,9 @@ export default function LoginForm() {
                 disabled:hover:translate-y-0
               "
             >
-              {login.isPending ? "Logging in..." : "Login"}
+              {login.isPending
+                ? "Logging in..."
+                : "Login"}
             </button>
           </form>
 

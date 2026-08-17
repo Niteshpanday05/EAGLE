@@ -18,6 +18,7 @@ export interface User {
   last_name: string;
   phone?: string | null;
   avatar?: string | null;
+  is_verified?: boolean;
 }
 
 export interface Tokens {
@@ -28,4 +29,9 @@ export interface Tokens {
 export interface AuthResponse {
   user: User;
   tokens: Tokens;
+}
+
+export interface RegisterResponse {
+  message: string;
+  user: User;
 }
