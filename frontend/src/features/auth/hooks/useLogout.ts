@@ -13,10 +13,11 @@ export function useLogout() {
     try {
       await authApi.logout();
     } finally {
-      queryClient.clear();
+      // Remove the authenticated user immediately
+      queryClient.setQueryData(["current-user"], null);
 
+      // Go to login
       router.replace("/login");
-      router.refresh();
     }
   };
 

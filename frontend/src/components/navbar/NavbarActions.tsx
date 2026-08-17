@@ -351,8 +351,9 @@ export default function NavbarActions({
               {/* =============================================
                   LOGOUT
                   ============================================= */}
-
-              <LogoutButton />
+<LogoutButton
+  onLogout={() => setIsAccountOpen(false)}
+/>
 
             </div>
           )}

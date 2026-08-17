@@ -3,13 +3,24 @@
 import { LogOut } from "lucide-react";
 import { useLogout } from "../hooks/useLogout";
 
-export default function LogoutButton() {
+interface LogoutButtonProps {
+  onLogout?: () => void;
+}
+
+export default function LogoutButton({
+  onLogout,
+}: LogoutButtonProps) {
   const { logout } = useLogout();
+
+  const handleLogout = async () => {
+    onLogout?.();
+    await logout();
+  };
 
   return (
     <button
       type="button"
-      onClick={logout}
+      onClick={handleLogout}
       className="
         flex
         w-full
