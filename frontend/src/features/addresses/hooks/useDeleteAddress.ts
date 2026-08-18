@@ -1,21 +1,19 @@
-import { useState } from "react";
+"use client";
 
-import { AddressAPI } from "../api/address.api";
+import { useState } from "react";
+import AddressApi from "../api/address.api";
 
 export function useDeleteAddress() {
   const [loading, setLoading] = useState(false);
 
-  const deleteAddress = async (
-    id: number
-  ): Promise<void> => {
-    setLoading(true);
-
+  async function deleteAddress(id: number) {
     try {
-      await AddressAPI.remove(id);
+      setLoading(true);
+      await AddressApi.deleteAddress(id);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return {
     deleteAddress,

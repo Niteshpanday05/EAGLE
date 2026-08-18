@@ -36,7 +36,7 @@ export default function AboutStory() {
             <div className="relative overflow-hidden rounded-[1.75rem] bg-neutral-100">
               <div className="relative aspect-[5/5]">
                 <Image
-                  src="/images/about/Nitesh1.jpeg"
+                  src="/images/about/Nitesh.png"
                   alt="Our story"
                   fill
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.04]"

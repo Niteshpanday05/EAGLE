@@ -7,7 +7,7 @@ import {
 class AddressApi {
   async getAddresses(): Promise<Address[]> {
     const response = await axios.get("/addresses/");
-    return response.data;
+    return response.data.results;
   }
 
   async createAddress(data: AddressFormData): Promise<Address> {

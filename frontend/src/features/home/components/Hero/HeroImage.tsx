@@ -32,7 +32,7 @@ export default function HeroImage() {
         "
       >
         <Image
-          src="/images/hero/watch1.avif"
+          src="/images/hero/lap.jpg"
           alt="Premium watch"
           fill
           preload

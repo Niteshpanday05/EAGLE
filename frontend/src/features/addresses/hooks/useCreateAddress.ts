@@ -1,12 +1,15 @@
+"use client";
+
 import { useMutation } from "@tanstack/react-query";
 
 import { queryClient } from "@/lib/query-client";
-
-import { AddressAPI } from "../api/address.api";
+import AddressApi from "../api/address.api";
+import { AddressFormData } from "@/features/addresses/types";
 
 export function useCreateAddress() {
-  return useMutation({
-    mutationFn: AddressAPI.create,
+  const mutation = useMutation({
+    mutationFn: (data: AddressFormData) =>
+      AddressApi.createAddress(data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -14,4 +17,10 @@ export function useCreateAddress() {
       });
     },
   });
+
+  return {
+    createAddress: mutation.mutateAsync,
+    loading: mutation.isPending,
+    error: mutation.error,
+  };
 }

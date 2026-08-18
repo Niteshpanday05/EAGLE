@@ -46,7 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <img
             src={imageUrl}
             alt={product.name}
-            fill
+            
             sizes="
               (max-width: 640px) 50vw,
               (max-width: 768px) 33vw,
