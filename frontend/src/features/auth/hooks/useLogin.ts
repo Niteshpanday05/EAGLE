@@ -18,13 +18,26 @@ export function useLogin() {
     mutationFn: (data: LoginRequest) => authApi.login(data),
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["current-user"],
-      });
+      try {
+        await queryClient.fetchQuery({
+          queryKey: ["current-user"],
+          queryFn: () => authApi.getCurrentUser(),
+          staleTime: 5 * 60 * 1000,
+        });
 
-      toast.success("Login successful");
+        toast.success("Login successful");
 
-      router.push("/");
+        router.replace("/");
+      } catch (error) {
+        console.error(
+          "Failed to fetch current user:",
+          error
+        );
+
+        toast.error(
+          "Login successful, but failed to load your profile."
+        );
+      }
     },
 
     onError: (error: any) => {
