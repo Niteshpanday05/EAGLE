@@ -1,6 +1,7 @@
 "use client";
 
 import { LogOut } from "lucide-react";
+
 import { useLogout } from "../hooks/useLogout";
 
 interface LogoutButtonProps {

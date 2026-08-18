@@ -27,6 +27,10 @@ export default function NavbarActions({
 }: NavbarActionsProps) {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
 
+  const closeAccountMenu = () => {
+    setIsAccountOpen(false);
+  };
+
   return (
     <div className="flex shrink-0 items-center gap-1">
 
@@ -201,7 +205,7 @@ export default function NavbarActions({
             {user?.avatar ? (
               <img
                 src={user.avatar}
-                alt="User avatar"
+                alt={user.first_name || "Profile"}
                 className="
                   h-8
                   w-8
@@ -256,7 +260,13 @@ export default function NavbarActions({
                 "
               >
                 <p className="truncate text-sm font-semibold text-slate-900">
-                  {user?.first_name || "My Account"}
+                  {user?.first_name
+                    ? `${user.first_name}${
+                        user.last_name
+                          ? ` ${user.last_name}`
+                          : ""
+                      }`
+                    : "My Account"}
                 </p>
 
                 {user?.email && (
@@ -272,7 +282,7 @@ export default function NavbarActions({
 
               <Link
                 href="/account"
-                onClick={() => setIsAccountOpen(false)}
+                onClick={closeAccountMenu}
                 className="
                   mt-1
                   flex
@@ -298,7 +308,7 @@ export default function NavbarActions({
 
               <Link
                 href="/orders"
-                onClick={() => setIsAccountOpen(false)}
+                onClick={closeAccountMenu}
                 className="
                   flex
                   w-full
@@ -323,7 +333,7 @@ export default function NavbarActions({
 
               <Link
                 href="/wishlist"
-                onClick={() => setIsAccountOpen(false)}
+                onClick={closeAccountMenu}
                 className="
                   flex
                   w-full
@@ -351,32 +361,33 @@ export default function NavbarActions({
               {/* =============================================
                   LOGOUT
                   ============================================= */}
-<LogoutButton
-  onLogout={() => setIsAccountOpen(false)}
-/>
 
+              <LogoutButton
+                onLogout={closeAccountMenu}
+              />
             </div>
           )}
         </div>
       ) : (
 
         /* ===================================================
-           LOGIN
+           NOT AUTHENTICATED → LOGIN BUTTON
            =================================================== */
 
         <Link
           href="/login"
           aria-label="Login"
           className="
-            group
-            flex
-            h-8
-            w-8
-            shrink-0
+            ml-1
+            inline-flex
+            h-9
             items-center
             justify-center
             rounded-full
             bg-slate-950
+            px-5
+            text-sm
+            font-semibold
             text-white
             shadow-sm
             transition
@@ -389,18 +400,9 @@ export default function NavbarActions({
             focus:ring-offset-2
           "
         >
-          <UserRound
-            className="
-              h-[16px]
-              w-[16px]
-              transition-transform
-              duration-200
-              group-hover:scale-105
-            "
-          />
+          Login
         </Link>
       )}
-
     </div>
   );
 }
