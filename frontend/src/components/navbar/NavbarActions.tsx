@@ -183,14 +183,14 @@ export default function NavbarActions({
             className="
               group
               flex
-              h-9
-              w-9
+              h-7
+              w-7
               shrink-0
               items-center
               justify-center
               rounded-full
               bg-slate-950
-              text-white
+              text-white/80
               shadow-sm
               transition
               duration-200
@@ -200,6 +200,7 @@ export default function NavbarActions({
               focus:ring-2
               focus:ring-slate-300
               focus:ring-offset-2
+              cursor-pointer
             "
           >
             {user?.avatar ? (
@@ -257,9 +258,11 @@ export default function NavbarActions({
                   border-slate-100
                   px-3
                   py-3
+                  
+                  text-white
                 "
               >
-                <p className="truncate text-sm font-semibold text-slate-900">
+                <p className="truncate text-sm font-bold text-slate-900">
                   {user?.first_name
                     ? `${user.first_name}${
                         user.last_name
@@ -350,6 +353,27 @@ export default function NavbarActions({
                 "
               >
                 Wishlist
+              </Link>
+              
+              <Link
+                href="/wishlist"
+                onClick={closeAccountMenu}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  rounded-xl
+                  px-3
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-100
+                  hover:text-slate-950
+                "
+              >
+                Settings
               </Link>
 
               {/* =============================================

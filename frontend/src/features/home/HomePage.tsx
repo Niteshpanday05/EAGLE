@@ -9,6 +9,7 @@ import { useProducts } from "@/features/products/hooks/useProducts";
 import WhyChooseUs from "./components/WhyChooseUs";
 import { AboutWhyChooseUs } from "../about";
 import BrandSection from "./components/BrandSection/BrandSection";
+import { NewsletterSection } from "./components/Newsletter";
 
 export default function HomePage() {
   const {
@@ -38,6 +39,7 @@ export default function HomePage() {
       {/* <PromoBanner /> */}
       {/* <WhyChooseUs /> */}
       <AboutWhyChooseUs />
+      <NewsletterSection />
     </main>
   );
 }
