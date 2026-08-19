@@ -9,7 +9,7 @@ export default function NavbarLogo() {
         group
         flex
         items-center
-        gap-2.5
+        gap-2
       "
     >
       {/* Logo Box */}
@@ -17,8 +17,8 @@ export default function NavbarLogo() {
       <div
         className="
           flex
-          h-10
-          w-16
+          h-9
+          w-14
           items-center
           justify-center
           rounded-xl

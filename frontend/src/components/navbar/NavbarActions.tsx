@@ -32,7 +32,7 @@ export default function NavbarActions({
   };
 
   return (
-    <div className="flex shrink-0 items-center gap-1">
+    <div className="flex shrink-0 items-center ">
 
       {/* =====================================================
           WISHLIST
@@ -127,7 +127,7 @@ export default function NavbarActions({
       >
         <ShoppingBag
           className="
-            h-6
+            h-5
             w-5
             transition-transform
             duration-200
@@ -183,18 +183,19 @@ export default function NavbarActions({
             className="
               group
               flex
-              h-7
-              w-7
+              h-6
+              w-6
               shrink-0
               items-center
               justify-center
               rounded-full
-              bg-slate-950
-              text-white/80
+              bg-black
+              text-green-500
               shadow-sm
               transition
               duration-200
               hover:bg-slate-800
+              hover:text-white
               hover:shadow-md
               focus:outline-none
               focus:ring-2
@@ -208,8 +209,8 @@ export default function NavbarActions({
                 src={user.avatar}
                 alt={user.first_name || "Profile"}
                 className="
-                  h-8
-                  w-8
+                  h-7
+                  w-7
                   rounded-full
                   object-cover
                   ring-2
@@ -219,8 +220,9 @@ export default function NavbarActions({
             ) : (
               <UserRound
                 className="
-                  h-[17px]
-                  w-[17px]
+                  h-[16px]
+                  w-[16px]
+                  group-hover:scale-105
                 "
               />
             )}

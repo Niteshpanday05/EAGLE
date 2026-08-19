@@ -31,12 +31,12 @@ export default function Navbar({
         className="
           mx-auto
           flex
-          h-[56px]
+          h-[50px]
           w-full
           max-w-full
           items-center
           px-4
-          lg:h-16
+          lg:h-12
           lg:px-7
         "
       >

@@ -7,7 +7,7 @@ import PromoBanner from "./components/PromoBanner";
 
 import { useProducts } from "@/features/products/hooks/useProducts";
 import WhyChooseUs from "./components/WhyChooseUs";
-import { AboutWhyChooseUs } from "../about";
+import { AboutHero, AboutWhyChooseUs } from "../about";
 import BrandSection from "./components/BrandSection/BrandSection";
 import { NewsletterSection } from "./components/Newsletter";
 
@@ -21,7 +21,7 @@ export default function HomePage() {
 
   return (
     <main>
-      <Hero />
+      <AboutHero />
 
       <CategorySection />
 

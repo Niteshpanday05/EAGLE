@@ -72,10 +72,10 @@ export default function AboutHero() {
             <div className="relative">
               <div className="relative ml-auto max-w-2xl">
                 {/* Main image */}
-                <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-1">
-                  <div className="relative aspect-[16/9] overflow-hidden rounded-[1.45rem] bg-neutral-900">
+                <div className="relative overflow-hidden rounded-[1.75rem] p-1">
+                  <div className="relative aspect-[16/12] overflow-hidden rounded-[1.45rem] bg-neutral-900">
                     <Image
-                      src="/images/about/watch1.jpg"
+                      src="/images/about/11.png"
                       alt="Our ecommerce collection"
                       fill
                       priority
@@ -89,7 +89,7 @@ export default function AboutHero() {
                 </div>
 
                 {/* Floating top card */}
-                <div className="absolute -left-4 top-5 hidden rounded-2xl border border-white/10 bg-neutral-900/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:block lg:-left-8">
+                {/* <div className="absolute -left-4 top-5 hidden rounded-2xl border border-white/10 bg-neutral-900/80 px-4 py-3 shadow-xl backdrop-blur-xl sm:block lg:-left-8">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-3.5 w-3.5 text-white/60" />
 
@@ -101,10 +101,10 @@ export default function AboutHero() {
                   <p className="mt-1 text-xs font-medium text-white/80">
                     Made for everyday living
                   </p>
-                </div>
+                </div> */}
 
                 {/* Floating bottom card */}
-                <div className="absolute -bottom-5 right-5 rounded-2xl border border-white/10 bg-white/[0.07] px-5 py-4 shadow-2xl backdrop-blur-xl lg:-right-6">
+                {/* <div className="absolute -bottom-5 right-5 rounded-2xl border border-white/10 bg-white/[0.07] px-5 py-4 shadow-2xl backdrop-blur-xl lg:-right-6">
                   <p className="text-[9px] uppercase tracking-[0.2em] text-white/35">
                     Our philosophy
                   </p>
@@ -112,7 +112,7 @@ export default function AboutHero() {
                   <p className="mt-1 text-xs font-semibold text-white/85">
                     Quality over quantity.
                   </p>
-                </div>
+                </div> */}
 
                 {/* Decorative number */}
                 <div className="absolute -bottom-10 left-2 hidden text-[5rem] font-bold leading-none tracking-[-0.08em] text-white/[0.025] lg:block">
