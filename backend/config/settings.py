@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     "apps.hero",
     "apps.dashboard",
     "apps.notifications",
-    
+    "apps.deals",
     "apps.accounts",
     "django_filters",
     "rest_framework_simplejwt.token_blacklist",
