@@ -7,7 +7,7 @@ import PromoBanner from "./components/PromoBanner";
 
 import { useProducts } from "@/features/products/hooks/useProducts";
 import WhyChooseUs from "./components/WhyChooseUs";
-import { AboutHero, AboutWhyChooseUs } from "../about";
+import { AboutCTA, AboutHero, AboutWhyChooseUs } from "../about";
 import BrandSection from "./components/BrandSection/BrandSection";
 import { NewsletterSection } from "./components/Newsletter";
 
@@ -21,6 +21,7 @@ export default function HomePage() {
 
   return (
     <main>
+      {/* <Hero/> */}
       <AboutHero />
 
       <CategorySection />
@@ -36,9 +37,10 @@ export default function HomePage() {
         limit={8}
       />
       <BrandSection/>
+      <AboutCTA/>
       {/* <PromoBanner /> */}
       {/* <WhyChooseUs /> */}
-      <AboutWhyChooseUs />
+      {/* <AboutWhyChooseUs /> */}
       <NewsletterSection />
     </main>
   );

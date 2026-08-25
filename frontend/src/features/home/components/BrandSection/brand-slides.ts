@@ -16,7 +16,7 @@ export const brandSlides: BrandSlide[] = [
 
   {
     id: "brand-02",
-    video: "/videos/brand/iphone.mp4",
+    video: "/videos/brand/1.mp4",
     eyebrow: "LIVE BEAUTIFULLY",
     title: "Grow Your Space",
     description:
@@ -29,7 +29,7 @@ export const brandSlides: BrandSlide[] = [
 
   {
     id: "brand-03",
-    video: "/videos/brand/3.mp4",
+    video: "/videos/brand/5.mp4",
     eyebrow: "NATURE • HOME • LIFE",
     title: "Make Space Feel Alive",
     description:

@@ -73,9 +73,9 @@ export default function AboutHero() {
               <div className="relative ml-auto max-w-2xl">
                 {/* Main image */}
                 <div className="relative overflow-hidden rounded-[1.75rem] p-1">
-                  <div className="relative aspect-[16/12] overflow-hidden rounded-[1.45rem] bg-neutral-900">
+                  <div className="relative aspect-[16/14] overflow-hidden rounded-[1.45rem]">
                     <Image
-                      src="/images/about/11.png"
+                      src="/images/about/222.png"
                       alt="Our ecommerce collection"
                       fill
                       priority
@@ -84,7 +84,7 @@ export default function AboutHero() {
                     />
 
                     {/* Image gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-white/[0.08]" />
+                    {/* <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-white/[0.08]" /> */}
                   </div>
                 </div>
 

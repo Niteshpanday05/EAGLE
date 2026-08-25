@@ -36,7 +36,7 @@ export default function Navbar({
           max-w-full
           items-center
           px-4
-          lg:h-12
+          lg:h-14
           lg:px-7
         "
       >
