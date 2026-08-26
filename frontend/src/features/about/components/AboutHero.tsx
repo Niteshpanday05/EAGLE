@@ -70,7 +70,7 @@ export default function AboutHero() {
 
             {/* RIGHT VISUAL */}
             <div className="relative">
-              <div className="relative ml-auto max-w-2xl">
+              <div className="relative ml-auto max-w-xl">
                 {/* Main image */}
                 <div className="relative overflow-hidden rounded-[1.75rem] p-1">
                   <div className="relative aspect-[16/14] overflow-hidden rounded-[1.45rem]">
@@ -80,7 +80,7 @@ export default function AboutHero() {
                       fill
                       priority
                       className="object-cover transition-transform duration-700 hover:scale-[1.03]"
-                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                     />
 
                     {/* Image gradient */}

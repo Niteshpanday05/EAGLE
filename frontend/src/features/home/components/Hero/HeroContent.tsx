@@ -1,94 +1,62 @@
-import HeroButtons from "./HeroButtons";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export default function HeroContent() {
   return (
-    <div
-      className="
-        max-w-2xl
-        space-y-6
+    <div className="relative z-10 max-w-xl">
+      {/* Eyebrow */}
+      <div className="mb-5 flex items-center gap-3">
+        <span
+          aria-hidden="true"
+          className="h-px w-8 bg-white/30"
+        />
 
-        sm:space-y-8
-        lg:space-y-13
-      "
-    >
-      {/* Badge */}
-      <div
-        className="
-          inline-flex
-          max-w-max
-          items-center
-          gap-2
-          rounded-full
-          border
-          border-white/20
-          bg-white/10
-          px-4
-          py-2
-          backdrop-blur-md
-
-          sm:px-5
-        "
-      >
-        <span className="h-2 w-2 rounded-full bg-emerald-400" />
-
-       <span
-  className="
-    new-collection-badge
-    text-[10px]
-    font-medium
-    uppercase
-    tracking-[0.15em]
-    text-white/90
-    sm:text-xs
-    lg:text-sm
-  "
->
-  New Collection
-</span>
+        <span className="text-[10px] font-medium uppercase tracking-[0.25em] text-white/50">
+          Curated for you
+        </span>
       </div>
 
       {/* Heading */}
-      <div className="space-y-3 sm:space-y-5">
-        <h1
-    className="
-      text-3xl
-      font-extrabold
-      leading-tight
-      tracking-tight
-      text-white
-      sm:text-4xl
-      md:text-5xl
-      lg:text-6xl
-    "
-  >
-    <span className="hero-premium-line  mb-1 hero-premium-line-1 block  font-semibold leading-[1.05] tracking-[-0.04em] text-neutral-300 sm:text-4xl lg:text-6xl">
-      Elevate Your
-    </span>
+      <h1 className="text-[2.7rem] font-semibold leading-[0.98] tracking-[-0.04em] sm:text-5xl lg:text-[4rem] xl:text-[4.5rem]">
+        Everything
+        <span className="block text-white/35">
+          you need,
+        </span>
 
-    <span className="font-semibold text-neutral-300">
-              Everyday lifestyle..
-            </span>
-  </h1>
+        <span className="block">
+          beautifully chosen.
+        </span>
+      </h1>
 
-        <p
-          className="
-            max-w-xl
-            text-sm
-            leading-7
-            text-white/80
+      {/* Description */}
+      <p className="mt-6 max-w-md text-sm leading-6 text-white/50 sm:text-base sm:leading-7">
+        Discover thoughtfully selected products designed to make
+        everyday living simpler, better, and more enjoyable.
+      </p>
 
-            sm:text-base
-            md:text-lg
-          "
+      {/* Actions */}
+      <div className="mt-7 flex flex-wrap items-center gap-3">
+        {/* Primary Button */}
+        <Link
+          href="/products"
+          className="group inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-xs font-semibold text-neutral-950 transition-all duration-300 hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-neutral-950"
         >
-          Discover products that blend modern design,
-          premium quality, and exceptional value—all in one
-          seamless shopping experience.
-        </p>
-      </div>
+          Shop Collection
 
-      {/* Buttons */}
-      <HeroButtons />
+          <ArrowUpRight
+            aria-hidden="true"
+            className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
+        </Link>
+
+        {/* Secondary Button */}
+        <Link
+          href="/products"
+          className="inline-flex items-center rounded-full border border-white/10 px-5 py-3 text-xs font-medium text-white/70 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.04] hover:text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-neutral-950"
+        >
+          Explore
+        </Link>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import Hero from "./components/Hero";
+
 import CategorySection from "../categories/components/CategorySection";
 import FeaturedProducts from "./components/FeaturedProducts";
 import PromoBanner from "./components/PromoBanner";
@@ -10,6 +10,8 @@ import WhyChooseUs from "./components/WhyChooseUs";
 import { AboutCTA, AboutHero, AboutWhyChooseUs } from "../about";
 import BrandSection from "./components/BrandSection/BrandSection";
 import { NewsletterSection } from "./components/Newsletter";
+import { Hero } from "./components/Hero";
+
 
 export default function HomePage() {
   const {
@@ -21,8 +23,8 @@ export default function HomePage() {
 
   return (
     <main>
-      {/* <Hero/> */}
-      <AboutHero />
+      <Hero/>
+      {/* <AboutHero /> */}
 
       <CategorySection />
 

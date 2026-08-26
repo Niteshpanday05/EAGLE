@@ -1,84 +1,69 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export default function HeroButtons() {
   return (
-    <div
-      className="
-        mt-8
-        flex
-        flex-col
-        gap-4
+    <div className="flex flex-wrap items-center gap-3">
+      <Link
+        href="/products"
+        className="
+          group
+          inline-flex
+          items-center
+          gap-2
+          rounded-full
+          bg-white
+          px-5
+          py-3
+          text-xs
+          font-semibold
+          text-neutral-950
+          transition-all
+          duration-300
+          hover:bg-white/90
+          focus:outline-none
+          focus:ring-2
+          focus:ring-white/50
+          focus:ring-offset-2
+          focus:ring-offset-neutral-950
+        "
+      >
+        Shop Collection
 
-        sm:flex-row
-        sm:items-center
-      "
-    >
+        <ArrowUpRight
+          aria-hidden="true"
+          className="
+            h-3.5
+            w-3.5
+            transition-transform
+            duration-300
+            group-hover:translate-x-0.5
+            group-hover:-translate-y-0.5
+          "
+        />
+      </Link>
+
       <Link
         href="/products"
         className="
           inline-flex
-          w-full
           items-center
-          justify-center
           rounded-full
           border
-          border-white
-          bg-white
-          px-6
+          border-white/10
+          px-5
           py-3
-          text-sm
-          font-semibold
-          text-black
+          text-xs
+          font-medium
+          text-white/70
           transition-all
           duration-300
-
-          hover:bg-transparent
+          hover:border-white/20
+          hover:bg-white/[0.04]
           hover:text-white
-
-          sm:w-auto
-          sm:px-8
-          sm:py-3.5
-          sm:text-base
-
-          lg:px-10
-          lg:py-3
         "
       >
-        Shop Now
-      </Link>
-
-      <Link
-        href="/categories"
-        className="
-          inline-flex
-          w-full
-          items-center
-          justify-center
-          rounded-full
-          border
-          border-white/60
-          bg-transparent
-          px-6
-          py-3
-          text-sm
-          font-semibold
-          text-white
-          transition-all
-          duration-300
-
-          hover:bg-white
-          hover:text-black
-
-          sm:w-auto
-          sm:px-8
-          sm:py-3.5
-          sm:text-base
-
-          lg:px-6
-          lg:py-3
-        "
-      >
-        Collections
+        Explore
       </Link>
     </div>
   );
