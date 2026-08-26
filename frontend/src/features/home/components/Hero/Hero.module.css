@@ -1,0 +1,93 @@
+.heroItem {
+  opacity: 0;
+  transform: translateY(8px);
+
+  animation: elegantReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.item1 {
+  animation-delay: 80ms;
+}
+
+.item2 {
+  animation-delay: 160ms;
+}
+
+.item3 {
+  animation-delay: 220ms;
+}
+
+.item4 {
+  animation-delay: 280ms;
+}
+
+.item5 {
+  animation-delay: 400ms;
+}
+
+.item6 {
+  animation-delay: 520ms;
+}
+
+@keyframes elegantReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* --------------------------------
+   New Collection
+-------------------------------- */
+
+.newCollection {
+  display: inline-block;
+
+  animation: collectionFloat 4s ease-in-out infinite;
+
+  transition:
+    color 300ms ease,
+    text-shadow 300ms ease,
+    letter-spacing 300ms ease;
+}
+
+.newCollection:hover {
+  color: rgb(251 191 36);
+
+  letter-spacing: 0.2em;
+
+  text-shadow:
+    0 0 8px rgba(251, 191, 36, 0.35),
+    0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+@keyframes collectionFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+
+/* --------------------------------
+   Reduced Motion
+-------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .heroItem,
+  .newCollection {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

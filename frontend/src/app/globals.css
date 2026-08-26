@@ -119,3 +119,65 @@ body {
     animation: none !important;
   }
 }
+
+
+/* hero */
+/* ========================================
+   Premium Hero Entrance Animation
+   ======================================== */
+
+.hero-item {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translate3d(0, 14px, 0);
+
+  animation-name: premiumHeroReveal;
+  animation-duration: 1.1s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: forwards;
+
+  will-change: opacity, transform, filter;
+}
+
+.hero-item-1 {
+  animation-delay: 0.08s;
+}
+
+.hero-item-2 {
+  animation-delay: 0.18s;
+}
+
+.hero-item-3 {
+  animation-delay: 0.28s;
+}
+
+.hero-item-4 {
+  animation-delay: 0.38s;
+}
+
+.hero-item-5 {
+  animation-delay: 0.52s;
+}
+
+.hero-item-6 {
+  animation-delay: 0.68s;
+}
+
+@keyframes premiumHeroReveal {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(0, 14px, 0);
+  }
+
+  60% {
+    opacity: 0.8;
+    filter: blur(2px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
