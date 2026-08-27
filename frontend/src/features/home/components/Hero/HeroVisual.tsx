@@ -6,9 +6,9 @@ export default function HeroVisual() {
       <div className="relative ml-auto w-full max-w-xl">
         {/* Main Image */}
         <div className="relative overflow-hidden rounded-[1.75rem] p-1">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[1.45rem] sm:aspect-[16/14]">
+          <div className="relative aspect-[4/3] w-[85%] mx-auto overflow-hidden rounded-[1.45rem] sm:aspect-[16/14]">
             <Image
-              src="/images/about/222.png"
+              src="/images/about/ccc.png"
               alt="Featured products from our collection"
               fill
               priority
@@ -16,6 +16,7 @@ export default function HeroVisual() {
               className="object-cover transition-transform duration-700 hover:scale-[1.03]"
             />
           </div>
+          
         </div>
 
         {/* Decorative Number */}
