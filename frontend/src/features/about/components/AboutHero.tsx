@@ -1,124 +1,104 @@
+
 export default function AboutHero() {
   return (
     <section className="relative overflow-hidden bg-neutral-950 text-white">
-      {/* Background atmosphere */}
+      {/* Ambient background */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
       >
-        <div className="absolute left-1/2 top-[-280px] h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-white/[0.025] blur-[140px]" />
+        <div className="absolute left-[35%] top-[-300px] h-[700px] w-[700px] rounded-full bg-white/[0.035] blur-[160px]" />
 
-        <div className="absolute bottom-[-320px] right-[-180px] h-[520px] w-[520px] rounded-full bg-white/[0.02] blur-[130px]" />
+        <div className="absolute bottom-[-300px] right-[-180px] h-[550px] w-[550px] rounded-full bg-white/[0.025] blur-[140px]" />
+
+        <div className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(to_right,rgba(255,255,255,0.8)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.8)_1px,transparent_1px)] [background-size:80px_80px]" />
       </div>
 
-      {/* Content */}
+      {/* Main container */}
       <div className="relative mx-auto flex min-h-[calc(100svh-72px)] w-full max-w-7xl flex-col px-5 sm:px-8 lg:px-12">
+        {/* Hero content */}
+        <div className="flex flex-1 items-center py-14 sm:py-16 lg:py-20">
+          <div className="grid w-full items-center gap-14 lg:grid-cols-[1.35fr_0.65fr] lg:gap-20">
+            {/* Left */}
+            <div>
+              {/* Eyebrow */}
+              <div className="mb-8 flex items-center gap-3 sm:mb-10">
+                <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
 
-        {/* Header */}
-        <header className="flex items-center justify-between border-b border-white/[0.08] py-5">
-          <div className="flex items-center gap-3">
-            <span
-              aria-hidden="true"
-              className="h-1.5 w-1.5 rounded-full bg-white/70"
-            />
+                <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/35">
+                  About us
+                </span>
+              </div>
 
-            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/45">
-              About us
-            </span>
-          </div>
+              {/* Heading */}
+              <h1 className="max-w-5xl text-[clamp(3.5rem,8vw,8rem)] font-medium leading-[0.86] tracking-[-0.07em]">
+                <span className="block">Discover</span>
 
-          <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/25">
-            Est. 2026
-          </span>
-        </header>
+                <span className="block text-white/25">better.</span>
 
-        {/* Main */}
-        <div className="flex flex-1 items-center py-16 sm:py-20 lg:py-24">
-          <div className="w-full">
+                <span className="block">Choose</span>
 
-            {/* Intro */}
-            <div className="mb-10 max-w-md sm:mb-12">
-              <p className="text-xs leading-6 text-white/40 sm:text-sm sm:leading-7">
-                We are building a better way to discover the things
-                you need, want, and love.
-              </p>
+                <span className="block text-white/25">confidently.</span>
+              </h1>
             </div>
 
-            {/* Heading */}
-            <h1 className="max-w-6xl text-[clamp(3.5rem,8vw,8rem)] font-medium leading-[0.9] tracking-[-0.065em]">
-              <span className="block">
-                Discover
-              </span>
+            {/* Right */}
+            <div className="relative lg:pt-24">
+              {/* Vertical accent */}
+              <div className="absolute -left-6 top-24 hidden h-24 w-px bg-white/15 lg:block" />
 
-              <span className="block text-white/30">
-                better.
-              </span>
-
-              <span className="block">
-                Choose
-              </span>
-
-              <span className="block text-white/30">
-                confidently.
-              </span>
-            </h1>
-
-            {/* Supporting content */}
-            {/* <div className="mt-14 grid gap-10 border-t border-white/[0.08] pt-8 sm:mt-16 sm:grid-cols-2 lg:mt-20 lg:grid-cols-[1fr_1fr_0.7fr]">
-
-              <div>
-                <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-white/25">
-                  Our philosophy
+              <div className="max-w-sm">
+                <p className="mb-6 text-[10px] font-medium uppercase tracking-[0.28em] text-white/25">
+                  What we believe
                 </p>
 
-                <p className="mt-4 max-w-sm text-sm leading-7 text-white/50">
-                  Great shopping is not about having more choices.
-                  It is about making the right choices easier.
+                <p className="text-lg leading-8 tracking-[-0.02em] text-white/65 sm:text-xl sm:leading-9">
+                  Shopping should feel less overwhelming and more
+                  intentional. We make it easier to discover products worth
+                  choosing.
                 </p>
+
+                <div className="mt-10 flex items-center gap-4">
+                  <div className="h-px w-12 bg-white/20" />
+
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-white/25">
+                    Simple by design
+                  </span>
+                </div>
               </div>
 
-              <div>
-                <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-white/25">
-                  What matters
-                </p>
+              {/* Small detail */}
+              <div className="mt-16 flex items-end justify-between border-t border-white/[0.08] pt-5 lg:mt-24">
+                <div>
+                  <p className="text-[9px] uppercase tracking-[0.25em] text-white/20">
+                    Our approach
+                  </p>
 
-                <p className="mt-4 max-w-sm text-sm leading-7 text-white/50">
-                  Thoughtful products, transparent value, and an
-                  experience designed to stay simple from beginning
-                  to end.
-                </p>
+                  <p className="mt-2 text-sm text-white/40">
+                    Less noise. Better choices.
+                  </p>
+                </div>
+
+                <span className="text-[10px] uppercase tracking-[0.25em] text-white/20">
+                  01
+                </span>
               </div>
-
-              <div className="lg:justify-self-end">
-                <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-white/25">
-                  The idea
-                </p>
-
-                <p className="mt-4 text-sm leading-7 text-white/50">
-                  Less noise.
-                  <br />
-                  Better products.
-                  <br />
-                  Easier decisions.
-                </p>
-              </div>
-
-            </div> */}
+            </div>
           </div>
         </div>
 
-        {/* Footer */}
+        {/* Bottom line */}
         <footer className="flex items-center justify-between border-t border-white/[0.08] py-5">
           <span className="text-[9px] font-medium uppercase tracking-[0.28em] text-white/20">
             Made with intention
           </span>
 
           <span className="text-[9px] font-medium uppercase tracking-[0.28em] text-white/20">
-            01
+            Est. 2026
           </span>
         </footer>
-
       </div>
     </section>
   );
 }
+
