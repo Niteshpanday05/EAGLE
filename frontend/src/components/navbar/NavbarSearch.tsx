@@ -2,7 +2,12 @@
 
 import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface NavbarSearchProps {
   mobile?: boolean;
@@ -30,6 +35,10 @@ export default function NavbarSearch({
     router.push(
       `/products?search=${encodeURIComponent(value)}`
     );
+
+    if (!mobile) {
+      setOpen(false);
+    }
   }
 
   function clearSearch() {
@@ -52,9 +61,10 @@ export default function NavbarSearch({
     }
   }, [open, mobile]);
 
-  /*
-   * MOBILE
-   */
+  /* ==================================================
+     MOBILE SEARCH
+  ================================================== */
+
   if (mobile) {
     return (
       <form
@@ -72,17 +82,32 @@ export default function NavbarSearch({
             border-slate-200
             bg-slate-50
             px-2
+            transition
+            focus-within:border-slate-300
+            focus-within:bg-white
+            focus-within:ring-2
+            focus-within:ring-slate-950/5
           "
         >
-          <Search className="ml-2 h-4 w-4 shrink-0 text-slate-400" />
+          <Search
+            aria-hidden="true"
+            className="
+              ml-2
+              h-4
+              w-4
+              shrink-0
+              text-slate-400
+            "
+          />
 
           <input
             ref={inputRef}
-            type="search"
+            type="text"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search products..."
             aria-label="Search products"
+            autoComplete="off"
             className="
               h-full
               min-w-0
@@ -96,7 +121,7 @@ export default function NavbarSearch({
             "
           />
 
-          {query && (
+          {query.length > 0 && (
             <button
               type="button"
               onClick={clearSearch}
@@ -110,10 +135,16 @@ export default function NavbarSearch({
                 justify-center
                 rounded-full
                 text-slate-400
+                transition
                 hover:bg-slate-100
+                hover:text-slate-700
+                active:scale-95
               "
             >
-              <X className="h-4 w-4" />
+              <X
+                aria-hidden="true"
+                className="h-4 w-4"
+              />
             </button>
           )}
         </div>
@@ -121,18 +152,13 @@ export default function NavbarSearch({
     );
   }
 
-  /*
-   * DESKTOP
-   *
-   * Closed:
-   * Search icon only
-   *
-   * Open:
-   * Search field
-   */
+  /* ==================================================
+     DESKTOP SEARCH
+  ================================================== */
+
   return (
     <div className="relative">
-      {!open ? (
+      {!open && (
         <button
           type="button"
           onClick={openSearch}
@@ -148,11 +174,17 @@ export default function NavbarSearch({
             transition
             hover:bg-slate-100
             hover:text-slate-950
+            active:scale-95
           "
         >
-          <Search className="h-5 w-5" />
+          <Search
+            aria-hidden="true"
+            className="h-5 w-5"
+          />
         </button>
-      ) : (
+      )}
+
+      {open && (
         <form
           onSubmit={handleSubmit}
           className="
@@ -178,17 +210,30 @@ export default function NavbarSearch({
               shadow-lg
               ring-1
               ring-slate-950/5
+              transition
+              focus-within:border-slate-300
+              focus-within:ring-slate-950/10
             "
           >
-            <Search className="ml-2 h-4 w-4 shrink-0 text-slate-400" />
+            <Search
+              aria-hidden="true"
+              className="
+                ml-2
+                h-4
+                w-4
+                shrink-0
+                text-slate-400
+              "
+            />
 
             <input
               ref={inputRef}
-              type="search"
+              type="text"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search products..."
               aria-label="Search products"
+              autoComplete="off"
               className="
                 h-full
                 min-w-0
@@ -202,33 +247,15 @@ export default function NavbarSearch({
               "
             />
 
-            {query && (
-              <button
-                type="button"
-                onClick={clearSearch}
-                aria-label="Clear search"
-                className="
-                  flex
-                  h-8
-                  w-8
-                  shrink-0
-                  items-center
-                  justify-center
-                  rounded-full
-                  text-slate-400
-                  hover:bg-slate-100
-                "
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-
             <button
               type="button"
-              onClick={closeSearch}
-              aria-label="Close search"
+              onClick={query ? clearSearch : closeSearch}
+              aria-label={
+                query
+                  ? "Clear search"
+                  : "Close search"
+              }
               className="
-                ml-1
                 flex
                 h-8
                 w-8
@@ -237,10 +264,16 @@ export default function NavbarSearch({
                 justify-center
                 rounded-full
                 text-slate-400
+                transition
                 hover:bg-slate-100
+                hover:text-slate-700
+                active:scale-95
               "
             >
-              <X className="h-4 w-4" />
+              <X
+                aria-hidden="true"
+                className="h-4 w-4"
+              />
             </button>
           </div>
         </form>
