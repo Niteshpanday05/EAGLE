@@ -57,7 +57,7 @@ export default function CategoryCard({ category }: Props) {
       />
 
       {/* Product Count */}
-      <div
+      {/* <div
         className="
           absolute
           right-2.5
@@ -74,7 +74,7 @@ export default function CategoryCard({ category }: Props) {
         "
       >
         {category.product_count} Products
-      </div>
+      </div> */}
 
       {/* Content */}
       <div className="absolute inset-x-0 bottom-0 p-3">
@@ -94,9 +94,9 @@ export default function CategoryCard({ category }: Props) {
               {category.name}
             </h3>
 
-            <p className="mt-1 text-[10px] text-white/65">
+            {/* <p className="mt-1 text-[10px] text-white/65">
               Explore collection
-            </p>
+            </p> */}
 
             {/* Animated Line */}
             <div
