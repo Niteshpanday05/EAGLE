@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Category } from "../types";
@@ -15,49 +14,44 @@ export default function CategoryCard({ category }: Props) {
         group
         relative
         block
-        h-72
+        h-48
         overflow-hidden
-        rounded-2xl
+        rounded-xl
         bg-slate-900
         shadow-sm
         transition-all
         duration-500
         ease-[cubic-bezier(0.22,1,0.36,1)]
         hover:-translate-y-1
-        hover:shadow-xl
+        hover:shadow-lg
       "
     >
-      {/* Full Image */}
+      {/* Image */}
       <div className="absolute inset-0">
         <img
           src={category.image || "/images/category-placeholder.jpg"}
           alt={category.name}
-          
-          
-          sizes="
-            (max-width: 640px) 100vw,
-            (max-width: 1024px) 50vw,
-            (max-width: 1280px) 33vw,
-            25vw
-          "
+          loading="lazy"
           className="
+            h-full
+            w-full
             object-cover
             transition-transform
             duration-700
             ease-[cubic-bezier(0.22,1,0.36,1)]
-            group-hover:scale-[1.04]
+            group-hover:scale-105
           "
         />
       </div>
 
-      {/* Dark bottom gradient */}
+      {/* Gradient Overlay */}
       <div
         className="
           absolute
           inset-0
           bg-gradient-to-t
-          from-black/80
-          via-black/20
+          from-black/85
+          via-black/25
           to-transparent
         "
       />
@@ -66,38 +60,33 @@ export default function CategoryCard({ category }: Props) {
       <div
         className="
           absolute
-          right-4
-          top-4
+          right-2.5
+          top-2.5
           rounded-full
           bg-white/90
-          px-3
+          px-2
           py-1
-          text-[11px]
+          text-[9px]
           font-medium
           text-slate-700
           shadow-sm
+          backdrop-blur-sm
         "
       >
         {category.product_count} Products
       </div>
 
-      {/* Content directly on image */}
-      <div
-        className="
-          absolute
-          inset-x-0
-          bottom-0
-          p-5
-          text-white
-        "
-      >
-        <div className="flex items-end justify-between gap-4">
+      {/* Content */}
+      <div className="absolute inset-x-0 bottom-0 p-3">
+        <div className="flex items-end justify-between gap-2">
+          {/* Category Info */}
           <div className="min-w-0">
             <h3
               className="
                 truncate
-                text-xl
+                text-base
                 font-semibold
+                leading-tight
                 tracking-tight
                 text-white
               "
@@ -105,20 +94,20 @@ export default function CategoryCard({ category }: Props) {
               {category.name}
             </h3>
 
-            <p className="mt-1 text-sm text-white/70">
+            <p className="mt-1 text-[10px] text-white/65">
               Explore collection
             </p>
 
-            {/* Hover line */}
+            {/* Animated Line */}
             <div
               className="
-                mt-3
+                mt-2
                 h-px
-                w-8
+                w-6
                 bg-white/70
                 transition-all
                 duration-500
-                group-hover:w-14
+                group-hover:w-10
               "
             />
           </div>
@@ -127,8 +116,8 @@ export default function CategoryCard({ category }: Props) {
           <div
             className="
               flex
-              h-9
-              w-9
+              h-7
+              w-7
               shrink-0
               items-center
               justify-center
@@ -137,6 +126,7 @@ export default function CategoryCard({ category }: Props) {
               border-white/30
               bg-white/10
               text-white
+              backdrop-blur-sm
               transition-all
               duration-500
               group-hover:border-white
@@ -147,7 +137,7 @@ export default function CategoryCard({ category }: Props) {
             <svg
               viewBox="0 0 20 20"
               fill="none"
-              className="h-4 w-4"
+              className="h-3.5 w-3.5"
             >
               <path
                 d="M4 10h11M10 5l5 5-5 5"
